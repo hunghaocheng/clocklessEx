@@ -1,0 +1,33 @@
+$date
+	Mon Jun 08 22:28:45 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module tb_press $end
+$scope module uutp $end
+$var wire 1 ! event_in $end
+$var wire 1 " ext_in $end
+$var wire 1 # key_in $end
+$var wire 1 $ press_event $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+1$
+0#
+0"
+0!
+$end
+#10
+0$
+1!
+1"
+#20
+1#
+0"
+#30
