@@ -64,5 +64,10 @@ module async_to_sync_fifo_ctrl #(
     assign empty = (wr_ptr == rd_ptr);
     assign full = (wr_ptr[ADDR_WIDTH] != rd_ptr[ADDR_WIDTH]) &&
     (wr_ptr[ADDR_WIDTH-1:0] == rd_ptr[ADDR_WIDTH-1:0]);
-
+integer i;
+initial begin
+    for (i = 0; i < FIFO_DEPTH; i = i + 1)
+        fifo_ram[i] = {DATA_WIDTH{1'b0}};
+end
 endmodule
+

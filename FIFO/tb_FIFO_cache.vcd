@@ -1,5 +1,5 @@
 $date
-	Mon Jun 15 17:08:05 2026
+	Mon Jun 15 22:24:51 2026
 $end
 $version
 	Icarus Verilog
@@ -22,11 +22,37 @@ $var reg 8 * din_reg [7:0] $end
 $var reg 3 + rd_ptr [2:0] $end
 $var reg 3 , wr_ptr [2:0] $end
 $var reg 3 - wr_req_sync [2:0] $end
+$var integer 32 . i [31:0] $end
+$upscope $end
+$upscope $end
+$scope module tb_async_to_sync_fifo $end
+$scope module uut $end
+$var reg 8 / \fifo_ram[0] [7:0] $end
+$upscope $end
+$upscope $end
+$scope module tb_async_to_sync_fifo $end
+$scope module uut $end
+$var reg 8 0 \fifo_ram[1] [7:0] $end
+$upscope $end
+$upscope $end
+$scope module tb_async_to_sync_fifo $end
+$scope module uut $end
+$var reg 8 1 \fifo_ram[2] [7:0] $end
+$upscope $end
+$upscope $end
+$scope module tb_async_to_sync_fifo $end
+$scope module uut $end
+$var reg 8 2 \fifo_ram[3] [7:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
+b0 2
+b0 1
+b0 0
+b0 /
+b100 .
 b0 -
 b0 ,
 b0 +
@@ -36,7 +62,7 @@ b0 *
 0'
 0&
 0%
-bx $
+b0 $
 0#
 0"
 b0 !
@@ -49,9 +75,9 @@ $end
 1#
 #20000
 0#
+1'
 #25000
 1#
-1'
 #30000
 0#
 1"
@@ -68,33 +94,14 @@ b11 -
 1#
 #50000
 0#
-#50005
 0"
 #55000
 0(
 b110 -
 0)
 b1 ,
+b10101010 /
 b10101010 $
 1#
 #60000
 0#
-#65000
-b100 -
-1#
-#70000
-0#
-#75000
-b0 -
-1#
-#80000
-0#
-#85000
-1#
-#90000
-0#
-#95000
-1#
-#100000
-0#
-#100010

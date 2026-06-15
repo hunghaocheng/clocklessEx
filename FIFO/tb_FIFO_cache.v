@@ -33,30 +33,30 @@ module tb_async_to_sync_fifo;
     );
 
     always #5000 clk_cache = ~clk_cache;
-
+    integer idx;
     initial begin
         $dumpfile("tb_FIFO_cache.vcd");
         $dumpvars(0, uut);
-
+        for (idx = 0; idx < FIFO_DEPTH; idx = idx + 1)
+            $dumpvars(0, uut.fifo_ram[idx]);
         clk_cache = 0;
         rst_n = 0;
         async_wr_req = 0;
         async_din = 0;
         rd_en = 0;
 
-        #25000;
+        #20000;
         rst_n = 1;
-        #5000;
-
-        $display("FIFO Empty: %b, Full: %b", empty, full);
+        #10000;
 
         //#9995;
         async_din = 8'hAA;
         async_wr_req = 1;
-        #20005;
+        $display("[%0t ps] >> 5bit written successfully", $time);
+        #20000;
 
         async_wr_req = 0;
-        #50005;
+        #10000;
 
         $display("[%0t ps] >> 5ps", $time);
 /*
