@@ -6,6 +6,7 @@ module st_full_adder (
     output Cout
 );
     wire w1, w2, w3;
+    
     xor t_xor1(w1, A, B);
     and t_and1(w2, A, B);
 
