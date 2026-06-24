@@ -1,0 +1,60 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1110-g18392a46)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 9;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_0000017fba54ccd0 .scope module, "tb_st_latch" "tb_st_latch" 2 2;
+ .timescale -9 -9;
+v0000017fba5dba00_0 .net "Y", 0 0, L_0000017fba5635d0;  1 drivers
+v0000017fba5dbaa0_0 .net "Yn", 0 0, L_0000017fba54a4d0;  1 drivers
+v0000017fba5dbb40_0 .var "data", 0 0;
+v0000017fba5dbbe0_0 .var "en", 0 0;
+S_0000017fba54ce60 .scope module, "t_latch" "st_latch" 2 6, 3 1 0, S_0000017fba54ccd0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "data";
+    .port_info 1 /INPUT 1 "en";
+    .port_info 2 /OUTPUT 1 "Y";
+    .port_info 3 /OUTPUT 1 "Yn";
+L_0000017fba563180/d .functor NAND 1, v0000017fba5dbb40_0, v0000017fba5dbbe0_0, C4<1>, C4<1>;
+L_0000017fba563180 .delay 1 (1000000000,1000000000,1000000000) L_0000017fba563180/d;
+L_0000017fba5637f0/d .functor NOT 1, v0000017fba5dbb40_0, C4<0>, C4<0>, C4<0>;
+L_0000017fba5637f0 .delay 1 (1000000000,1000000000,1000000000) L_0000017fba5637f0/d;
+L_0000017fba5633b0/d .functor NAND 1, L_0000017fba5637f0, v0000017fba5dbbe0_0, C4<1>, C4<1>;
+L_0000017fba5633b0 .delay 1 (1000000000,1000000000,1000000000) L_0000017fba5633b0/d;
+L_0000017fba5635d0/d .functor NAND 1, L_0000017fba563180, L_0000017fba54a4d0, C4<1>, C4<1>;
+L_0000017fba5635d0 .delay 1 (1000000000,1000000000,1000000000) L_0000017fba5635d0/d;
+L_0000017fba54a4d0/d .functor NAND 1, L_0000017fba5633b0, L_0000017fba5635d0, C4<1>, C4<1>;
+L_0000017fba54a4d0 .delay 1 (1000000000,1000000000,1000000000) L_0000017fba54a4d0/d;
+v0000017fba54cff0_0 .net "Y", 0 0, L_0000017fba5635d0;  alias, 1 drivers
+v0000017fba54a5f0_0 .net "Yn", 0 0, L_0000017fba54a4d0;  alias, 1 drivers
+v0000017fba54bab0_0 .net "data", 0 0, v0000017fba5dbb40_0;  1 drivers
+v0000017fba5630e0_0 .net "en", 0 0, v0000017fba5dbbe0_0;  1 drivers
+v0000017fba5db820_0 .net "inv_data", 0 0, L_0000017fba5637f0;  1 drivers
+v0000017fba5db8c0_0 .net "r_node", 0 0, L_0000017fba5633b0;  1 drivers
+v0000017fba5db960_0 .net "s_node", 0 0, L_0000017fba563180;  1 drivers
+    .scope S_0000017fba54ccd0;
+T_0 ;
+    %vpi_call 2 9 "$dumpfile", "tb_st_latch.vcd" {0 0 0};
+    %vpi_call 2 10 "$dumpvars", 32'sb00000000000000000000000000000000, S_0000017fba54ce60 {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %force/vec4 v0000017fba54cff0_0;
+    %pushi/vec4 0, 0, 1;
+    %force/vec4 v0000017fba54a5f0_0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0000017fba5dbb40_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v0000017fba5dbbe0_0, 0, 1;
+    %delay 20, 0;
+    %vpi_call 2 17 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_st_latch.v";
+    "st_latch.v";

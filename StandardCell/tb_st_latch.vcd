@@ -1,0 +1,32 @@
+$date
+	Mon Jun 22 15:55:27 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module tb_st_latch $end
+$scope module t_latch $end
+$var wire 1 ! Y $end
+$var wire 1 " Yn $end
+$var wire 1 # data $end
+$var wire 1 $ en $end
+$var wire 1 % inv_data $end
+$var wire 1 & r_node $end
+$var wire 1 ' s_node $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+x'
+x&
+x%
+1$
+0#
+0"
+0!
+$end
+#20
