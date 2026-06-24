@@ -1,5 +1,5 @@
 $date
-	Tue Jun 16 11:28:39 2026
+	Tue Jun 16 09:50:03 2026
 $end
 $version
 	Icarus Verilog
@@ -8,10 +8,10 @@ $timescale
 	1ps
 $end
 $scope module tb_async_to_sync_fifo $end
-$var wire 8 ! fifo_ram_0 [7:0] $end
-$var wire 8 " fifo_ram_1 [7:0] $end
-$var wire 8 # fifo_ram_2 [7:0] $end
-$var wire 8 $ fifo_ram_3 [7:0] $end
+$var wire 8 ! mon_ram0 [7:0] $end
+$var wire 8 " mon_ram1 [7:0] $end
+$var wire 8 # mon_ram2 [7:0] $end
+$var wire 8 $ mon_ram3 [7:0] $end
 $var wire 1 % full $end
 $var wire 1 & empty $end
 $var wire 8 ' dout [7:0] $end
@@ -87,9 +87,10 @@ b11 3
 1*
 #50000
 0*
+0)
 #55000
 0/
-b111 3
+b110 3
 0&
 b1 2
 b10101010 '
@@ -99,10 +100,12 @@ b10101010 !
 #60000
 0*
 #65000
+b100 3
 1*
 #70000
 0*
 #75000
+b0 3
 1*
 #80000
 0*
@@ -113,32 +116,4 @@ b10101010 !
 #95000
 1*
 #100000
-0*
-#105000
-1*
-#110000
-0*
-0)
-#115000
-b110 3
-1*
-#120000
-0*
-#125000
-b100 3
-1*
-#130000
-0*
-#135000
-b0 3
-1*
-#140000
-0*
-#145000
-1*
-#150000
-0*
-#155000
-1*
-#160000
 0*

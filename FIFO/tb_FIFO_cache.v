@@ -33,12 +33,21 @@ module tb_async_to_sync_fifo;
     );
 
     always #5000 clk_cache = ~clk_cache;
-    integer idx;
+
+    // 镜像 uut 内部 RAM（Icarus 无法 dump fifo_ram[]，名字用 fifo_ram_N 便于在 GTKWave 搜索）
+    wire [DATA_WIDTH-1:0] fifo_ram_0 = uut.fifo_ram[0];
+    wire [DATA_WIDTH-1:0] fifo_ram_1 = uut.fifo_ram[1];
+    wire [DATA_WIDTH-1:0] fifo_ram_2 = uut.fifo_ram[2];
+    wire [DATA_WIDTH-1:0] fifo_ram_3 = uut.fifo_ram[3];
+
     initial begin
         $dumpfile("tb_FIFO_cache.vcd");
-        $dumpvars(0, uut);
-        for (idx = 0; idx < FIFO_DEPTH; idx = idx + 1)
-            $dumpvars(0, uut.fifo_ram[idx]);
+        $dumpvars(0, tb_async_to_sync_fifo);
+        $display("VCD: tb_FIFO_cache.vcd");
+        $display("GTKWave: 展开 tb_async_to_sync_fifo（不是 uut），双击 fifo_ram_0~3 加入波形");
+    end
+
+    initial begin
         clk_cache = 0;
         rst_n = 0;
         async_wr_req = 0;
@@ -52,11 +61,10 @@ module tb_async_to_sync_fifo;
         //#9995;
         async_din = 8'hAA;
         async_wr_req = 1;
-        $display("[%0t ps] >> 5bit written successfully", $time);
-        #20000;
+        #80000;
 
         async_wr_req = 0;
-        #10000;
+        #50000;
 
         $display("[%0t ps] >> 5ps", $time);
 /*
