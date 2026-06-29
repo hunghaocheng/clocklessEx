@@ -1,0 +1,113 @@
+$date
+	Mon Jun 29 21:51:10 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module tb_coreprocess $end
+$var wire 8 ! device_out [7:0] $end
+$var reg 32 " device_a [31:0] $end
+$var reg 32 # device_b [31:0] $end
+$var reg 32 $ device_c [31:0] $end
+$var reg 32 % device_d [31:0] $end
+$var reg 32 & device_e [31:0] $end
+$var reg 32 ' device_f [31:0] $end
+$var reg 32 ( device_g [31:0] $end
+$var reg 32 ) device_h [31:0] $end
+$var reg 32 * device_i [31:0] $end
+$var reg 32 + device_j [31:0] $end
+$var reg 32 , device_k [31:0] $end
+$var reg 32 - device_l [31:0] $end
+$var reg 32 . device_m [31:0] $end
+$var reg 32 / device_n [31:0] $end
+$var reg 32 0 device_o [31:0] $end
+$var reg 32 1 device_p [31:0] $end
+$var reg 32 2 device_q [31:0] $end
+$var reg 32 3 device_r [31:0] $end
+$var reg 32 4 device_s [31:0] $end
+$var reg 32 5 device_t [31:0] $end
+$var reg 32 6 device_u [31:0] $end
+$var reg 32 7 device_v [31:0] $end
+$var reg 32 8 device_w [31:0] $end
+$var reg 32 9 device_x [31:0] $end
+$var reg 32 : device_y [31:0] $end
+$var reg 32 ; device_z [31:0] $end
+$var reg 1 < en $end
+$scope module node_z $end
+$var wire 1 < en $end
+$var wire 8 = signal_in [7:0] $end
+$var wire 8 > signal_out [7:0] $end
+$var wire 8 ? signal_inv [7:0] $end
+$scope module latch $end
+$var wire 8 @ data [7:0] $end
+$var wire 1 < en $end
+$var wire 8 A s_node [7:0] $end
+$var wire 8 B r_node [7:0] $end
+$var wire 8 C inv_data [7:0] $end
+$var wire 8 D Yn [7:0] $end
+$var wire 8 E Y [7:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx E
+bx D
+b11111111 C
+b11111111 B
+b11111111 A
+b0 @
+bx ?
+bx >
+b0 =
+0<
+b0 ;
+b0 :
+b0 9
+b0 8
+b0 7
+b0 6
+b0 5
+b0 4
+b0 3
+b0 2
+b0 1
+b0 0
+b0 /
+b0 .
+b0 -
+b0 ,
+b0 +
+b0 *
+b0 )
+b0 (
+b0 '
+b0 &
+b0 %
+b0 $
+b0 #
+b0 "
+bx !
+$end
+#10
+b1 !
+b1 >
+b1 E
+b11111110 A
+b11111110 C
+b11111110 ?
+b11111110 D
+b1 =
+b1 @
+b1 B
+b1 ;
+1<
+#11
+b11111111 A
+b11111111 B
+0<
+#21

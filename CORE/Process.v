@@ -6,5 +6,5 @@ module Process #(
     output wire[DATA_WIDTH-1:0] data_out
 );
     assign data_out = data_in;
-
+    
 endmodule

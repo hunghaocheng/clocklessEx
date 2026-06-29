@@ -1,0 +1,38 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1110-g18392a46)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 9;
+:vpi_module "D:\PROGRA~2\iverilog\lib\ivl\system.vpi";
+:vpi_module "D:\PROGRA~2\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "D:\PROGRA~2\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "D:\PROGRA~2\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "D:\PROGRA~2\iverilog\lib\ivl\va_math.vpi";
+S_000002bec7652ba0 .scope module, "tb_coreprocess" "tb_coreprocess" 2 2;
+ .timescale -9 -9;
+v000002bec7652ec0_0 .var "device_a", 0 0;
+v000002bec76533e0_0 .var "device_b", 0 0;
+v000002bec7685770_0 .var "device_c", 0 0;
+v000002bec748ee20_0 .var "device_d", 0 0;
+S_000002bec7652d30 .scope module, "st_reln" "st_relation" 2 7, 3 1 0, S_000002bec7652ba0;
+ .timescale 0 0;
+    .scope S_000002bec7652ba0;
+T_0 ;
+    %vpi_call 2 9 "$dumpfile", "tb_core.vcd" {0 0 0};
+    %vpi_call 2 10 "$dumpvars", 32'sb00000000000000000000000000000000, S_000002bec7652d30 {0 0 0};
+    %delay 10, 0;
+    %pushi/vec4 1, 0, 1;
+    %cassign/vec4 v000002bec7652ec0_0;
+    %pushi/vec4 0, 0, 1;
+    %cassign/vec4 v000002bec76533e0_0;
+    %pushi/vec4 1, 0, 1;
+    %cassign/vec4 v000002bec7685770_0;
+    %pushi/vec4 0, 0, 1;
+    %cassign/vec4 v000002bec748ee20_0;
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_coreprocess.v";
+    "st_relation.v";
