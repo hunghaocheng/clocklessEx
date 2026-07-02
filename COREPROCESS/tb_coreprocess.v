@@ -5,11 +5,14 @@ module tb_coreprocess;
         device_m, device_n, device_o, device_p, device_q, device_r, 
         device_s, device_t, device_u, device_v, device_w, device_x, device_y, device_z;
 
-    wire[7:0] device_out_z,device_out_h;      
+    wire[7:0] device_out_z,device_out_h0,device_out_h1;      
     reg en_z, en_h;
+
+    reg grant_fst , grant_sec;
+    st_2_encoder encoder1(en_h, grant_fst , grant_sec);
     st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
-    st_node node_h0(.signal_in(device_h[7:0]),.en(en_h),.signal_out(device_out_h));
-    //st_node node_h1(.signal_in(device_h[7:0]),.en(en),.signal_out(device_out));
+    st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));
+    st_node node_h1(.signal_in(device_h[7:0]),.en(grant_sec),.signal_out(device_out_h1));
     initial begin
         device_a = 0; device_b = 0; device_c = 0; device_d = 0; device_e = 0; device_f = 0;
         device_g = 0; device_h = 0; device_i = 0; device_j = 0; device_k = 0; device_l = 0;
@@ -35,6 +38,8 @@ module tb_coreprocess;
         #5;
         en_h = 0;
         #10;
+
+
         // device_h = 32'h00000002;
         //en = 1'b0;
         //#10;
