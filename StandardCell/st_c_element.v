@@ -1,16 +1,13 @@
 module st_c_element(
-    input A,
-    input B,
-    output Y
+    input req,
+    input ready,
+    output load
 );
-// Y = (A & B) | (Y & (A | B));
-    wire w1, w2, w3;
 
-    or t_or1(w1, A, B);
-    and t_and1(w2, Y, w1);
+    wire q ,n1, n2;
+    nand U1(n1, req, q);
+    nand U2(n2, ready, q);
+    nand U3(q, n1, n2);
 
-    and t_and2(w3, A, B);
-
-    or t_or2(Y, w2, w3);
-
+    buf U4(load, q);
 endmodule

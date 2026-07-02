@@ -2,14 +2,17 @@ module st_latch(
     input data,
     input en,
     output Y,
-    output Yn
+    output req
 );
-    wire r_node ,s_node, inv_data;
-    nand #1 t_nand1(s_node, data, en);
+    wire r_node ,s_node, inv_data,Yn;
+    nand t_nand1(s_node, data, en);
 
-    not #1 t_not1(inv_data, data);
-    nand #1 t_nand2(r_node, inv_data, en);
+    not t_not1(inv_data, data);
+    nand  t_nand2(r_node, inv_data, en);
 
-    nand #1 t_nand3_q(Y,s_node,Yn);
-    nand #1 t_nand4_q_n(Yn,r_node,Y);
+    nand  t_nand3_q(Y,s_node,Yn);
+    nand t_nand4_q_n(Yn,r_node,Y);
+
+    or t_or1(req, data, s_node);
+    // 想办法记录req
 endmodule
