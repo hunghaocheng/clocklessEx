@@ -6,10 +6,10 @@ module tb_coreprocess;
         device_s, device_t, device_u, device_v, device_w, device_x, device_y, device_z;
 
     wire[7:0] device_out_z,device_out_z_n,device_out_h0,device_out_h1;      
-    reg en_z, en_h;
+    reg en_z, en_h,rst;
     wire valid_z;
-    st_8_latch latch_z(.data(device_z[7:0]),.en(en_z),.Y(device_out_z),.valid(valid_z));
-
+    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.rst(rst),.data_out(device_out_z),.req(valid_z));
+    
 
     // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
     // st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));
@@ -22,6 +22,7 @@ module tb_coreprocess;
         device_y = 0; device_z = 0;
         en_z = 0;
         en_h = 0;
+        rst = 0;
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_coreprocess);
         #10;
