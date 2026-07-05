@@ -14,6 +14,4 @@ module st_latch(
     nand t_nand4_q_n(Yn,r_node,Y);
 
 
-    // 想办法记录req
-
 endmodule

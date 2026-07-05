@@ -6,10 +6,11 @@ module tb_coreprocess;
         device_s, device_t, device_u, device_v, device_w, device_x, device_y, device_z;
 
     wire[7:0] device_out_z,device_out_z_n,device_out_h0,device_out_h1;      
-    reg en_z, en_h,rst;
-    wire valid_z;
-    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.rst(rst),.data_out(device_out_z),.req(valid_z));
-    
+    reg en_z, en_h0,en_h1,ack;
+    wire valid_z,valid_h0,valid_h1;
+    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.ack(ack),.data_out(device_out_z),.req(valid_z));
+    st_event_register event_h0(.data_in(device_h[7:0]),.en(en_h0),.ack(ack),.data_out(device_out_h0),.req(valid_h0));
+    st_event_register event_h1(.data_in(device_h[7:0]),.en(en_h1),.ack(ack),.data_out(device_out_h1),.req(valid_h1));
 
     // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
     // st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));
@@ -20,9 +21,11 @@ module tb_coreprocess;
         device_m = 0; device_n = 0; device_o = 0; device_p = 0; device_q = 0; device_r = 0;
         device_s = 0; device_t = 0; device_u = 0; device_v = 0; device_w = 0; device_x = 0;
         device_y = 0; device_z = 0;
+
         en_z = 0;
-        en_h = 0;
-        rst = 0;
+        en_h0 = 0;
+        en_h1 = 0;
+        ack = 0;
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_coreprocess);
         #10;
@@ -33,14 +36,16 @@ module tb_coreprocess;
         #5
         en_z = 0;
         #10;
-        en_h = 1'b1;
+        en_h0 = 1'b1;
         device_h = 32'h00000002;
         #5;
-        en_h = 0;
+        en_h0 = 0;
         #10;
-        en_h = 1;
+        en_h1 = 1;
         #5;
-        en_h = 0;
+        en_h1 = 0;
+        #10;
+        ack = 1;
         #10;
 
 
