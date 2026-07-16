@@ -1,13 +1,18 @@
 module st_event_register(
     input[7:0] data_in,
     input en,
-    input rst,
+    input ack,
     output[7:0] data_out,
     output req
 );
     wire[7:0] data_inv;
     wire req_n;
     st_8_latch latch(.data(data_in),.en(en),.Y(data_out),.Yn(data_inv));
-    nand t_and1(req, en, req_n);
-    nand t_and2(req_n, rst, req);
+    
+    wire s_inv , r_inv;
+    nand(s_inv, en , ~ack);
+    not(r_inv, ack);
+
+    nand t_q1(req,  s_inv ,req_n);
+    nand t_q2(req_n,r_inv , req);
 endmodule

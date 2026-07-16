@@ -24,9 +24,11 @@ module tb_coreprocess;
         device_m = 0; device_n = 0; device_o = 0; device_p = 0; device_q = 0; device_r = 0;
         device_s = 0; device_t = 0; device_u = 0; device_v = 0; device_w = 0; device_x = 0;
         device_y = 0; device_z = 0;
+
         en_z = 0;
-        en_h = 0;
-        rst = 0;
+        en_h0 = 0;
+        en_h1 = 0;
+        ack = 0;
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_coreprocess);
         #10;
@@ -37,14 +39,16 @@ module tb_coreprocess;
         #5
         en_z = 0;
         #10;
-        en_h = 1'b1;
+        en_h0 = 1'b1;
         device_h = 32'h00000002;
         #5;
-        en_h = 0;
+        en_h0 = 0;
         #10;
-        en_h = 1;
+        en_h1 = 1;
         #5;
-        en_h = 0;
+        en_h1 = 0;
+        #10;
+        ack = 1;
         #10;
 
 

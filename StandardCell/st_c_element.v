@@ -1,13 +1,13 @@
 module st_c_element(
-    input req,
-    input ready,
-    output load
+    input a,
+    input b,
+    output y
 );
 
-    wire q ,n1, n2;
-    nand U1(n1, req, q);
-    nand U2(n2, ready, q);
-    nand U3(q, n1, n2);
-
-    buf U4(load, q);
+    wire n1, n2, n3;
+    nand g1(n1, a, y);
+    nand g2(n2, b, y);
+    nand g3(n3, a, b);
+    nand g4(y, n1, n2, n3);
+    
 endmodule
