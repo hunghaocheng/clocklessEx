@@ -1,4 +1,7 @@
 `timescale 1ns/1ns
+/* 
+    iverilog -o ./COREPROCESS/tb_core.out -c ./COREPROCESS/sources.f 
+*/
 module tb_coreprocess;
     reg[31:0] device_a, device_b, device_c, device_d, device_e, device_f,
         device_g, device_h, device_i, device_j, device_k, device_l,
@@ -8,8 +11,9 @@ module tb_coreprocess;
     wire[7:0] device_out_z,device_out_z_n,device_out_h0,device_out_h1;      
     reg en_z, en_h,rst;
     wire valid_z;
-    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.rst(rst),.data_out(device_out_z),.req(valid_z));
     
+    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.rst(rst),.data_out(device_out_z),.req(valid_z));
+    st_1_to_4_router router_z(.data_in(device_z[7:0]),.rst(rst));
 
     // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
     // st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));

@@ -1,0 +1,293 @@
+$date
+	Wed Jul 15 16:02:01 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module tb_coreprocess $end
+$var wire 1 ! valid_z $end
+$var wire 8 " device_out_z [7:0] $end
+$var reg 32 # device_a [31:0] $end
+$var reg 32 $ device_b [31:0] $end
+$var reg 32 % device_c [31:0] $end
+$var reg 32 & device_d [31:0] $end
+$var reg 32 ' device_e [31:0] $end
+$var reg 32 ( device_f [31:0] $end
+$var reg 32 ) device_g [31:0] $end
+$var reg 32 * device_h [31:0] $end
+$var reg 32 + device_i [31:0] $end
+$var reg 32 , device_j [31:0] $end
+$var reg 32 - device_k [31:0] $end
+$var reg 32 . device_l [31:0] $end
+$var reg 32 / device_m [31:0] $end
+$var reg 32 0 device_n [31:0] $end
+$var reg 32 1 device_o [31:0] $end
+$var reg 32 2 device_p [31:0] $end
+$var reg 32 3 device_q [31:0] $end
+$var reg 32 4 device_r [31:0] $end
+$var reg 32 5 device_s [31:0] $end
+$var reg 32 6 device_t [31:0] $end
+$var reg 32 7 device_u [31:0] $end
+$var reg 32 8 device_v [31:0] $end
+$var reg 32 9 device_w [31:0] $end
+$var reg 32 : device_x [31:0] $end
+$var reg 32 ; device_y [31:0] $end
+$var reg 32 < device_z [31:0] $end
+$var reg 1 = en_h $end
+$var reg 1 > en_z $end
+$var reg 1 ? rst $end
+$scope module event_z $end
+$var wire 8 @ data_in [7:0] $end
+$var wire 1 > en $end
+$var wire 1 ! req $end
+$var wire 1 A req_n $end
+$var wire 1 ? rst $end
+$var wire 8 B data_out [7:0] $end
+$var wire 8 C data_inv [7:0] $end
+$scope module latch $end
+$var wire 8 D data [7:0] $end
+$var wire 1 > en $end
+$var wire 8 E Yn [7:0] $end
+$var wire 8 F Y [7:0] $end
+$scope module latch0 $end
+$var wire 1 G Y $end
+$var wire 1 H Yn $end
+$var wire 1 I data $end
+$var wire 1 > en $end
+$var wire 1 J inv_data $end
+$var wire 1 K r_node $end
+$var wire 1 L s_node $end
+$upscope $end
+$scope module latch1 $end
+$var wire 1 M Y $end
+$var wire 1 N Yn $end
+$var wire 1 O data $end
+$var wire 1 > en $end
+$var wire 1 P inv_data $end
+$var wire 1 Q r_node $end
+$var wire 1 R s_node $end
+$upscope $end
+$scope module latch2 $end
+$var wire 1 S Y $end
+$var wire 1 T Yn $end
+$var wire 1 U data $end
+$var wire 1 > en $end
+$var wire 1 V inv_data $end
+$var wire 1 W r_node $end
+$var wire 1 X s_node $end
+$upscope $end
+$scope module latch3 $end
+$var wire 1 Y Y $end
+$var wire 1 Z Yn $end
+$var wire 1 [ data $end
+$var wire 1 > en $end
+$var wire 1 \ inv_data $end
+$var wire 1 ] r_node $end
+$var wire 1 ^ s_node $end
+$upscope $end
+$scope module latch4 $end
+$var wire 1 _ Y $end
+$var wire 1 ` Yn $end
+$var wire 1 a data $end
+$var wire 1 > en $end
+$var wire 1 b inv_data $end
+$var wire 1 c r_node $end
+$var wire 1 d s_node $end
+$upscope $end
+$scope module latch5 $end
+$var wire 1 e Y $end
+$var wire 1 f Yn $end
+$var wire 1 g data $end
+$var wire 1 > en $end
+$var wire 1 h inv_data $end
+$var wire 1 i r_node $end
+$var wire 1 j s_node $end
+$upscope $end
+$scope module latch6 $end
+$var wire 1 k Y $end
+$var wire 1 l Yn $end
+$var wire 1 m data $end
+$var wire 1 > en $end
+$var wire 1 n inv_data $end
+$var wire 1 o r_node $end
+$var wire 1 p s_node $end
+$upscope $end
+$scope module latch7 $end
+$var wire 1 q Y $end
+$var wire 1 r Yn $end
+$var wire 1 s data $end
+$var wire 1 > en $end
+$var wire 1 t inv_data $end
+$var wire 1 u r_node $end
+$var wire 1 v s_node $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+1v
+1u
+1t
+0s
+xr
+xq
+1p
+1o
+1n
+0m
+xl
+xk
+1j
+1i
+1h
+0g
+xf
+xe
+1d
+1c
+1b
+0a
+x`
+x_
+1^
+1]
+1\
+0[
+xZ
+xY
+1X
+1W
+1V
+0U
+xT
+xS
+1R
+1Q
+1P
+0O
+xN
+xM
+1L
+1K
+1J
+0I
+xH
+xG
+bx F
+bx E
+b0 D
+bx C
+bx B
+1A
+b0 @
+0?
+0>
+0=
+b0 <
+b0 ;
+b0 :
+b0 9
+b0 8
+b0 7
+b0 6
+b0 5
+b0 4
+b0 3
+b0 2
+b0 1
+b0 0
+b0 /
+b0 .
+b0 -
+b0 ,
+b0 +
+b0 *
+b0 )
+b0 (
+b0 '
+b0 &
+b0 %
+b0 $
+b0 #
+bx "
+1!
+$end
+#10
+1G
+0M
+0S
+0Y
+0_
+0e
+0k
+b1 "
+b1 B
+b1 F
+0q
+0L
+0J
+0H
+1N
+1T
+1Z
+1`
+1f
+1l
+b11111110 C
+b11111110 E
+1r
+1I
+0!
+1K
+0Q
+0W
+0]
+0c
+0i
+0o
+0u
+b1 @
+b1 D
+1>
+b1 <
+#15
+b11111100 C
+b11111100 E
+0N
+b11 "
+b11 B
+b11 F
+1M
+1Q
+0R
+0P
+1O
+b11 @
+b11 D
+b11 <
+#20
+1!
+1L
+1R
+1W
+1]
+1c
+1i
+1o
+1u
+0>
+#30
+b10 *
+1=
+#35
+0=
+#45
+1=
+#50
+0=
+#60
