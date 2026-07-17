@@ -1,5 +1,5 @@
 $date
-	Wed Jul 15 16:02:01 2026
+	Fri Jul 17 11:21:56 2026
 $end
 $version
 	Icarus Verilog
@@ -9,185 +9,514 @@ $timescale
 $end
 $scope module tb_coreprocess $end
 $var wire 1 ! valid_z $end
-$var wire 8 " device_out_z [7:0] $end
-$var reg 32 # device_a [31:0] $end
-$var reg 32 $ device_b [31:0] $end
-$var reg 32 % device_c [31:0] $end
-$var reg 32 & device_d [31:0] $end
-$var reg 32 ' device_e [31:0] $end
-$var reg 32 ( device_f [31:0] $end
-$var reg 32 ) device_g [31:0] $end
-$var reg 32 * device_h [31:0] $end
-$var reg 32 + device_i [31:0] $end
-$var reg 32 , device_j [31:0] $end
-$var reg 32 - device_k [31:0] $end
-$var reg 32 . device_l [31:0] $end
-$var reg 32 / device_m [31:0] $end
-$var reg 32 0 device_n [31:0] $end
-$var reg 32 1 device_o [31:0] $end
-$var reg 32 2 device_p [31:0] $end
-$var reg 32 3 device_q [31:0] $end
-$var reg 32 4 device_r [31:0] $end
-$var reg 32 5 device_s [31:0] $end
-$var reg 32 6 device_t [31:0] $end
-$var reg 32 7 device_u [31:0] $end
-$var reg 32 8 device_v [31:0] $end
-$var reg 32 9 device_w [31:0] $end
-$var reg 32 : device_x [31:0] $end
-$var reg 32 ; device_y [31:0] $end
-$var reg 32 < device_z [31:0] $end
-$var reg 1 = en_h $end
-$var reg 1 > en_z $end
-$var reg 1 ? rst $end
-$scope module event_z $end
-$var wire 8 @ data_in [7:0] $end
-$var wire 1 > en $end
-$var wire 1 ! req $end
-$var wire 1 A req_n $end
-$var wire 1 ? rst $end
-$var wire 8 B data_out [7:0] $end
-$var wire 8 C data_inv [7:0] $end
+$var wire 1 " valid_h1 $end
+$var wire 1 # valid_h0 $end
+$var wire 32 $ token_z [31:0] $end
+$var wire 8 % device_out_z [7:0] $end
+$var wire 8 & device_out_h1 [7:0] $end
+$var wire 8 ' device_out_h0 [7:0] $end
+$var reg 1 ( ack $end
+$var reg 32 ) device_a [31:0] $end
+$var reg 32 * device_b [31:0] $end
+$var reg 32 + device_c [31:0] $end
+$var reg 32 , device_d [31:0] $end
+$var reg 32 - device_e [31:0] $end
+$var reg 32 . device_f [31:0] $end
+$var reg 32 / device_g [31:0] $end
+$var reg 32 0 device_h [31:0] $end
+$var reg 32 1 device_i [31:0] $end
+$var reg 32 2 device_j [31:0] $end
+$var reg 32 3 device_k [31:0] $end
+$var reg 32 4 device_l [31:0] $end
+$var reg 32 5 device_m [31:0] $end
+$var reg 32 6 device_n [31:0] $end
+$var reg 32 7 device_o [31:0] $end
+$var reg 32 8 device_p [31:0] $end
+$var reg 32 9 device_q [31:0] $end
+$var reg 32 : device_r [31:0] $end
+$var reg 32 ; device_s [31:0] $end
+$var reg 32 < device_t [31:0] $end
+$var reg 32 = device_u [31:0] $end
+$var reg 32 > device_v [31:0] $end
+$var reg 32 ? device_w [31:0] $end
+$var reg 32 @ device_x [31:0] $end
+$var reg 32 A device_y [31:0] $end
+$var reg 32 B device_z [31:0] $end
+$var reg 1 C en_h0 $end
+$var reg 1 D en_h1 $end
+$var reg 1 E en_z $end
+$var reg 8 F flags [7:0] $end
+$var reg 8 G source_id [7:0] $end
+$var reg 8 H type_z [7:0] $end
+$scope module event_h0 $end
+$var wire 1 ( ack $end
+$var wire 8 I data_in [7:0] $end
+$var wire 1 C en $end
+$var wire 1 J r_inv $end
+$var wire 1 # req $end
+$var wire 1 K req_n $end
+$var wire 1 L s_inv $end
+$var wire 8 M data_out [7:0] $end
+$var wire 8 N data_inv [7:0] $end
 $scope module latch $end
-$var wire 8 D data [7:0] $end
-$var wire 1 > en $end
-$var wire 8 E Yn [7:0] $end
-$var wire 8 F Y [7:0] $end
+$var wire 8 O data [7:0] $end
+$var wire 1 C en $end
+$var wire 8 P Yn [7:0] $end
+$var wire 8 Q Y [7:0] $end
 $scope module latch0 $end
-$var wire 1 G Y $end
-$var wire 1 H Yn $end
-$var wire 1 I data $end
-$var wire 1 > en $end
-$var wire 1 J inv_data $end
-$var wire 1 K r_node $end
-$var wire 1 L s_node $end
+$var wire 1 R Y $end
+$var wire 1 S Yn $end
+$var wire 1 T data $end
+$var wire 1 C en $end
+$var wire 1 U inv_data $end
+$var wire 1 V r_node $end
+$var wire 1 W s_node $end
 $upscope $end
 $scope module latch1 $end
-$var wire 1 M Y $end
-$var wire 1 N Yn $end
-$var wire 1 O data $end
-$var wire 1 > en $end
-$var wire 1 P inv_data $end
-$var wire 1 Q r_node $end
-$var wire 1 R s_node $end
+$var wire 1 X Y $end
+$var wire 1 Y Yn $end
+$var wire 1 Z data $end
+$var wire 1 C en $end
+$var wire 1 [ inv_data $end
+$var wire 1 \ r_node $end
+$var wire 1 ] s_node $end
 $upscope $end
 $scope module latch2 $end
-$var wire 1 S Y $end
-$var wire 1 T Yn $end
-$var wire 1 U data $end
-$var wire 1 > en $end
-$var wire 1 V inv_data $end
-$var wire 1 W r_node $end
-$var wire 1 X s_node $end
+$var wire 1 ^ Y $end
+$var wire 1 _ Yn $end
+$var wire 1 ` data $end
+$var wire 1 C en $end
+$var wire 1 a inv_data $end
+$var wire 1 b r_node $end
+$var wire 1 c s_node $end
 $upscope $end
 $scope module latch3 $end
-$var wire 1 Y Y $end
-$var wire 1 Z Yn $end
-$var wire 1 [ data $end
-$var wire 1 > en $end
-$var wire 1 \ inv_data $end
-$var wire 1 ] r_node $end
-$var wire 1 ^ s_node $end
+$var wire 1 d Y $end
+$var wire 1 e Yn $end
+$var wire 1 f data $end
+$var wire 1 C en $end
+$var wire 1 g inv_data $end
+$var wire 1 h r_node $end
+$var wire 1 i s_node $end
 $upscope $end
 $scope module latch4 $end
-$var wire 1 _ Y $end
-$var wire 1 ` Yn $end
-$var wire 1 a data $end
-$var wire 1 > en $end
-$var wire 1 b inv_data $end
-$var wire 1 c r_node $end
-$var wire 1 d s_node $end
+$var wire 1 j Y $end
+$var wire 1 k Yn $end
+$var wire 1 l data $end
+$var wire 1 C en $end
+$var wire 1 m inv_data $end
+$var wire 1 n r_node $end
+$var wire 1 o s_node $end
 $upscope $end
 $scope module latch5 $end
-$var wire 1 e Y $end
-$var wire 1 f Yn $end
-$var wire 1 g data $end
-$var wire 1 > en $end
-$var wire 1 h inv_data $end
-$var wire 1 i r_node $end
-$var wire 1 j s_node $end
+$var wire 1 p Y $end
+$var wire 1 q Yn $end
+$var wire 1 r data $end
+$var wire 1 C en $end
+$var wire 1 s inv_data $end
+$var wire 1 t r_node $end
+$var wire 1 u s_node $end
 $upscope $end
 $scope module latch6 $end
-$var wire 1 k Y $end
-$var wire 1 l Yn $end
-$var wire 1 m data $end
-$var wire 1 > en $end
-$var wire 1 n inv_data $end
-$var wire 1 o r_node $end
-$var wire 1 p s_node $end
+$var wire 1 v Y $end
+$var wire 1 w Yn $end
+$var wire 1 x data $end
+$var wire 1 C en $end
+$var wire 1 y inv_data $end
+$var wire 1 z r_node $end
+$var wire 1 { s_node $end
 $upscope $end
 $scope module latch7 $end
-$var wire 1 q Y $end
-$var wire 1 r Yn $end
-$var wire 1 s data $end
-$var wire 1 > en $end
-$var wire 1 t inv_data $end
-$var wire 1 u r_node $end
-$var wire 1 v s_node $end
+$var wire 1 | Y $end
+$var wire 1 } Yn $end
+$var wire 1 ~ data $end
+$var wire 1 C en $end
+$var wire 1 !" inv_data $end
+$var wire 1 "" r_node $end
+$var wire 1 #" s_node $end
 $upscope $end
 $upscope $end
+$upscope $end
+$scope module event_h1 $end
+$var wire 1 ( ack $end
+$var wire 8 $" data_in [7:0] $end
+$var wire 1 D en $end
+$var wire 1 %" r_inv $end
+$var wire 1 " req $end
+$var wire 1 &" req_n $end
+$var wire 1 '" s_inv $end
+$var wire 8 (" data_out [7:0] $end
+$var wire 8 )" data_inv [7:0] $end
+$scope module latch $end
+$var wire 8 *" data [7:0] $end
+$var wire 1 D en $end
+$var wire 8 +" Yn [7:0] $end
+$var wire 8 ," Y [7:0] $end
+$scope module latch0 $end
+$var wire 1 -" Y $end
+$var wire 1 ." Yn $end
+$var wire 1 /" data $end
+$var wire 1 D en $end
+$var wire 1 0" inv_data $end
+$var wire 1 1" r_node $end
+$var wire 1 2" s_node $end
+$upscope $end
+$scope module latch1 $end
+$var wire 1 3" Y $end
+$var wire 1 4" Yn $end
+$var wire 1 5" data $end
+$var wire 1 D en $end
+$var wire 1 6" inv_data $end
+$var wire 1 7" r_node $end
+$var wire 1 8" s_node $end
+$upscope $end
+$scope module latch2 $end
+$var wire 1 9" Y $end
+$var wire 1 :" Yn $end
+$var wire 1 ;" data $end
+$var wire 1 D en $end
+$var wire 1 <" inv_data $end
+$var wire 1 =" r_node $end
+$var wire 1 >" s_node $end
+$upscope $end
+$scope module latch3 $end
+$var wire 1 ?" Y $end
+$var wire 1 @" Yn $end
+$var wire 1 A" data $end
+$var wire 1 D en $end
+$var wire 1 B" inv_data $end
+$var wire 1 C" r_node $end
+$var wire 1 D" s_node $end
+$upscope $end
+$scope module latch4 $end
+$var wire 1 E" Y $end
+$var wire 1 F" Yn $end
+$var wire 1 G" data $end
+$var wire 1 D en $end
+$var wire 1 H" inv_data $end
+$var wire 1 I" r_node $end
+$var wire 1 J" s_node $end
+$upscope $end
+$scope module latch5 $end
+$var wire 1 K" Y $end
+$var wire 1 L" Yn $end
+$var wire 1 M" data $end
+$var wire 1 D en $end
+$var wire 1 N" inv_data $end
+$var wire 1 O" r_node $end
+$var wire 1 P" s_node $end
+$upscope $end
+$scope module latch6 $end
+$var wire 1 Q" Y $end
+$var wire 1 R" Yn $end
+$var wire 1 S" data $end
+$var wire 1 D en $end
+$var wire 1 T" inv_data $end
+$var wire 1 U" r_node $end
+$var wire 1 V" s_node $end
+$upscope $end
+$scope module latch7 $end
+$var wire 1 W" Y $end
+$var wire 1 X" Yn $end
+$var wire 1 Y" data $end
+$var wire 1 D en $end
+$var wire 1 Z" inv_data $end
+$var wire 1 [" r_node $end
+$var wire 1 \" s_node $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module event_z $end
+$var wire 1 ( ack $end
+$var wire 8 ]" data_in [7:0] $end
+$var wire 1 E en $end
+$var wire 1 ^" r_inv $end
+$var wire 1 ! req $end
+$var wire 1 _" req_n $end
+$var wire 1 `" s_inv $end
+$var wire 8 a" data_out [7:0] $end
+$var wire 8 b" data_inv [7:0] $end
+$scope module latch $end
+$var wire 8 c" data [7:0] $end
+$var wire 1 E en $end
+$var wire 8 d" Yn [7:0] $end
+$var wire 8 e" Y [7:0] $end
+$scope module latch0 $end
+$var wire 1 f" Y $end
+$var wire 1 g" Yn $end
+$var wire 1 h" data $end
+$var wire 1 E en $end
+$var wire 1 i" inv_data $end
+$var wire 1 j" r_node $end
+$var wire 1 k" s_node $end
+$upscope $end
+$scope module latch1 $end
+$var wire 1 l" Y $end
+$var wire 1 m" Yn $end
+$var wire 1 n" data $end
+$var wire 1 E en $end
+$var wire 1 o" inv_data $end
+$var wire 1 p" r_node $end
+$var wire 1 q" s_node $end
+$upscope $end
+$scope module latch2 $end
+$var wire 1 r" Y $end
+$var wire 1 s" Yn $end
+$var wire 1 t" data $end
+$var wire 1 E en $end
+$var wire 1 u" inv_data $end
+$var wire 1 v" r_node $end
+$var wire 1 w" s_node $end
+$upscope $end
+$scope module latch3 $end
+$var wire 1 x" Y $end
+$var wire 1 y" Yn $end
+$var wire 1 z" data $end
+$var wire 1 E en $end
+$var wire 1 {" inv_data $end
+$var wire 1 |" r_node $end
+$var wire 1 }" s_node $end
+$upscope $end
+$scope module latch4 $end
+$var wire 1 ~" Y $end
+$var wire 1 !# Yn $end
+$var wire 1 "# data $end
+$var wire 1 E en $end
+$var wire 1 ## inv_data $end
+$var wire 1 $# r_node $end
+$var wire 1 %# s_node $end
+$upscope $end
+$scope module latch5 $end
+$var wire 1 &# Y $end
+$var wire 1 '# Yn $end
+$var wire 1 (# data $end
+$var wire 1 E en $end
+$var wire 1 )# inv_data $end
+$var wire 1 *# r_node $end
+$var wire 1 +# s_node $end
+$upscope $end
+$scope module latch6 $end
+$var wire 1 ,# Y $end
+$var wire 1 -# Yn $end
+$var wire 1 .# data $end
+$var wire 1 E en $end
+$var wire 1 /# inv_data $end
+$var wire 1 0# r_node $end
+$var wire 1 1# s_node $end
+$upscope $end
+$scope module latch7 $end
+$var wire 1 2# Y $end
+$var wire 1 3# Yn $end
+$var wire 1 4# data $end
+$var wire 1 E en $end
+$var wire 1 5# inv_data $end
+$var wire 1 6# r_node $end
+$var wire 1 7# s_node $end
+$upscope $end
+$upscope $end
+$upscope $end
+$scope module token_gen_z $end
+$var wire 8 8# data_in [7:0] $end
+$var wire 8 9# flags [7:0] $end
+$var wire 8 :# source_id [7:0] $end
+$var wire 32 ;# token_out [31:0] $end
+$var wire 8 <# type_in [7:0] $end
+$var wire 1 ! valid $end
+$var wire 32 =# as_token_out [31:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
-1v
+b0x000000000x0xxxxxxxx =#
+b10 <#
+b0x000000000x0xxxxxxxx ;#
+b1000 :#
+b0 9#
+bx 8#
+17#
+16#
+15#
+04#
+x3#
+x2#
+11#
+10#
+1/#
+0.#
+x-#
+x,#
+1+#
+1*#
+1)#
+0(#
+x'#
+x&#
+1%#
+1$#
+1##
+0"#
+x!#
+x~"
+1}"
+1|"
+1{"
+0z"
+xy"
+xx"
+1w"
+1v"
+1u"
+0t"
+xs"
+xr"
+1q"
+1p"
+1o"
+0n"
+xm"
+xl"
+1k"
+1j"
+1i"
+0h"
+xg"
+xf"
+bx e"
+bx d"
+b0 c"
+bx b"
+bx a"
+1`"
+x_"
+1^"
+b0 ]"
+1\"
+1["
+1Z"
+0Y"
+xX"
+xW"
+1V"
+1U"
+1T"
+0S"
+xR"
+xQ"
+1P"
+1O"
+1N"
+0M"
+xL"
+xK"
+1J"
+1I"
+1H"
+0G"
+xF"
+xE"
+1D"
+1C"
+1B"
+0A"
+x@"
+x?"
+1>"
+1="
+1<"
+0;"
+x:"
+x9"
+18"
+17"
+16"
+05"
+x4"
+x3"
+12"
+11"
+10"
+0/"
+x."
+x-"
+bx ,"
+bx +"
+b0 *"
+bx )"
+bx ("
+1'"
+x&"
+1%"
+b0 $"
+1#"
+1""
+1!"
+0~
+x}
+x|
+1{
+1z
+1y
+0x
+xw
+xv
 1u
 1t
-0s
-xr
+1s
+0r
 xq
-1p
+xp
 1o
 1n
-0m
-xl
+1m
+0l
 xk
-1j
+xj
 1i
 1h
-0g
-xf
+1g
+0f
 xe
-1d
+xd
 1c
 1b
-0a
-x`
+1a
+0`
 x_
-1^
+x^
 1]
 1\
-0[
-xZ
+1[
+0Z
 xY
-1X
+xX
 1W
 1V
-0U
-xT
+1U
+0T
 xS
-1R
-1Q
-1P
-0O
-xN
-xM
+xR
+bx Q
+bx P
+b0 O
+bx N
+bx M
 1L
-1K
+xK
 1J
-0I
-xH
-xG
-bx F
-bx E
-b0 D
-bx C
-bx B
-1A
+b0 I
+b10 H
+b1000 G
+b0 F
+0E
+0D
+0C
+b0 B
+b0 A
 b0 @
-0?
-0>
-0=
+b0 ?
+b0 >
+b0 =
 b0 <
 b0 ;
 b0 :
@@ -208,86 +537,185 @@ b0 ,
 b0 +
 b0 *
 b0 )
-b0 (
-b0 '
-b0 &
-b0 %
-b0 $
-b0 #
-bx "
-1!
+0(
+bx '
+bx &
+bx %
+b0x000000000x0xxxxxxxx $
+x#
+x"
+x!
 $end
 #10
-1G
-0M
-0S
-0Y
-0_
-0e
-0k
-b1 "
-b1 B
-b1 F
-0q
-0L
-0J
-0H
-1N
-1T
+0_"
+b10000000001000000011 $
+b10000000001000000011 ;#
+b10000000001000000011 =#
+1f"
+1l"
+0r"
+0x"
+0~"
+0&#
+0,#
+b11 %
+b11 a"
+b11 e"
+b11 8#
+02#
+0k"
+0i"
+0q"
+0o"
+1!
+0g"
+0m"
+1s"
+1y"
+1!#
+1'#
+1-#
+b11111100 b"
+b11111100 d"
+13#
+1h"
+1n"
+0`"
+1j"
+1p"
+0v"
+0|"
+0$#
+0*#
+00#
+06#
+b11 ]"
+b11 c"
+1E
+b11 B
+#15
+1`"
+1k"
+1q"
+1v"
+1|"
+1$#
+1*#
+10#
+16#
+0E
+#25
+0]
+0[
+06"
+0K
+0R
+1X
+0^
+0d
+0j
+0p
+0v
+b10 '
+b10 M
+b10 Q
+0|
 1Z
-1`
-1f
-1l
-b11111110 C
-b11111110 E
-1r
-1I
+15"
+1#
+1S
+0Y
+1_
+1e
+1k
+1q
+1w
+b11111101 N
+b11111101 P
+1}
+b10 I
+b10 O
+b10 $"
+b10 *"
+0L
+0V
+1\
+0b
+0h
+0n
+0t
+0z
+0""
+b10 0
+1C
+#30
+1L
+1V
+1]
+1b
+1h
+1n
+1t
+1z
+1""
+0C
+#40
+0&"
+0-"
+04"
+09"
+0?"
+0E"
+0K"
+0Q"
+0W"
+1"
+1."
+b10 &
+b10 ("
+b10 ,"
+13"
+1:"
+1@"
+1F"
+1L"
+1R"
+b11111101 )"
+b11111101 +"
+1X"
+0'"
+01"
+08"
+0="
+0C"
+0I"
+0O"
+0U"
+0["
+1D
+#45
+1'"
+11"
+18"
+1="
+1C"
+1I"
+1O"
+1U"
+1["
+0D
+#55
+b0 $
+b0 ;#
+b0 =#
+0#
+0"
 0!
 1K
-0Q
-0W
-0]
-0c
-0i
-0o
-0u
-b1 @
-b1 D
-1>
-b1 <
-#15
-b11111100 C
-b11111100 E
-0N
-b11 "
-b11 B
-b11 F
-1M
-1Q
-0R
-0P
-1O
-b11 @
-b11 D
-b11 <
-#20
-1!
-1L
-1R
-1W
-1]
-1c
-1i
-1o
-1u
-0>
-#30
-b10 *
-1=
-#35
-0=
-#45
-1=
-#50
-0=
-#60
+1&"
+1_"
+0J
+0%"
+0^"
+1(
+#65

@@ -3,7 +3,41 @@ module st_token_generator(
     input[7:0] type_in,
     input[7:0] source_id,
     input[7:0] flags,
-    output[31:0] token_out
+    output[31:0] token_out,
+    input valid
 );
-    assign token_out = {source_id, type_in, data_in, flags};
+    wire[31:0] as_token_out;
+    and and_0(as_token_out[0],data_in[0],valid);
+    and and_1(as_token_out[1],data_in[1],valid);
+    and and_2(as_token_out[2],data_in[2],valid);
+    and and_3(as_token_out[3],data_in[3],valid);
+    and and_4(as_token_out[4],data_in[4],valid);
+    and and_5(as_token_out[5],data_in[5],valid);
+    and and_6(as_token_out[6],data_in[6],valid);
+    and and_7(as_token_out[7],data_in[7],valid);
+    and and_8(as_token_out[8],type_in[0],valid);
+    and and_9(as_token_out[9],type_in[1],valid);
+    and and_10(as_token_out[10],type_in[2],valid);
+    and and_11(as_token_out[11],type_in[3],valid);
+    and and_12(as_token_out[12],type_in[4],valid);
+    and and_13(as_token_out[13],type_in[5],valid);  
+    and and_14(as_token_out[14],type_in[6],valid);
+    and and_15(as_token_out[15],type_in[7],valid);
+    and and_16(as_token_out[16],source_id[0],valid);
+    and and_17(as_token_out[17],source_id[1],valid);
+    and and_18(as_token_out[18],source_id[2],valid);
+    and and_19(as_token_out[19],source_id[3],valid);
+    and and_20(as_token_out[20],source_id[4],valid);
+    and and_21(as_token_out[21],source_id[5],valid);
+    and and_22(as_token_out[22],source_id[6],valid);
+    and and_23(as_token_out[23],source_id[7],valid);
+    and and_24(as_token_out[24],flags[0],valid);
+    and and_25(as_token_out[25],flags[1],valid);
+    and and_26(as_token_out[26],flags[2],valid);
+    and and_27(as_token_out[27],flags[3],valid);
+    and and_28(as_token_out[28],flags[4],valid);
+    and and_29(as_token_out[29],flags[5],valid);
+    and and_30(as_token_out[30],flags[6],valid);
+    and and_31(as_token_out[31],flags[7],valid);
+    assign token_out = as_token_out;
 endmodule

@@ -8,16 +8,26 @@ module tb_coreprocess;
         device_m, device_n, device_o, device_p, device_q, device_r, 
         device_s, device_t, device_u, device_v, device_w, device_x, device_y, device_z;
 
+    wire[31:0] token_z;
+
     wire[7:0] device_out_z,device_out_z_n,device_out_h0,device_out_h1;      
-    reg en_z, en_h,rst;
-    wire valid_z;
+    reg en_z, en_h0,en_h1,ack;
+    reg[7:0] type_z,source_id,flags;
     
-    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.rst(rst),.data_out(device_out_z),.req(valid_z));
-    st_1_to_4_router router_z(.data_in(device_z[7:0]),.rst(rst));
+    wire valid_z,valid_h0,valid_h1;
+
+    st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.ack(ack),.data_out(device_out_z),.req(valid_z));
+    st_event_register event_h0(.data_in(device_h[7:0]),.en(en_h0),.ack(ack),.data_out(device_out_h0),.req(valid_h0));
+    st_event_register event_h1(.data_in(device_h[7:0]),.en(en_h1),.ack(ack),.data_out(device_out_h1),.req(valid_h1));
+    
+    st_token_generator token_gen_z(device_out_z,type_z,source_id,flags,token_z,valid_z);
+    st_1_to_4_router router_z(token_z,valid_z,token_out1,token_out2,token_out3,token_out4);
+
 
     // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
     // st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));
     // st_node node_h1(.signal_in(device_h[7:0]),.en(grant_sec),.signal_out(device_out_h1));
+    
     initial begin
         device_a = 0; device_b = 0; device_c = 0; device_d = 0; device_e = 0; device_f = 0;
         device_g = 0; device_h = 0; device_i = 0; device_j = 0; device_k = 0; device_l = 0;
@@ -25,6 +35,9 @@ module tb_coreprocess;
         device_s = 0; device_t = 0; device_u = 0; device_v = 0; device_w = 0; device_x = 0;
         device_y = 0; device_z = 0;
 
+        type_z = 8'h02;
+        source_id = 8'h08;
+        flags = 8'h00;
         en_z = 0;
         en_h0 = 0;
         en_h1 = 0;
@@ -32,10 +45,8 @@ module tb_coreprocess;
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_coreprocess);
         #10;
-        device_z = 32'h00000001;
-        en_z = 1'b1;
-        #5;
         device_z = 32'h00000003;
+        en_z = 1'b1;
         #5
         en_z = 0;
         #10;
