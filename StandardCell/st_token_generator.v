@@ -20,7 +20,7 @@ module st_token_generator(
     and and_10(as_token_out[10],type_in[2],valid);
     and and_11(as_token_out[11],type_in[3],valid);
     and and_12(as_token_out[12],type_in[4],valid);
-    and and_13(as_token_out[13],type_in[5],valid);  
+    and and_13(as_token_out[13],type_in[5],valid);
     and and_14(as_token_out[14],type_in[6],valid);
     and and_15(as_token_out[15],type_in[7],valid);
     and and_16(as_token_out[16],source_id[0],valid);
