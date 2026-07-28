@@ -1,4 +1,0 @@
-# neuron txn test vectors (ASCII keys as synaptic data)
-# format: in_a in_b  note
-7A  68   z-h coincidence pair
-79  6B   y-k coincidence pair

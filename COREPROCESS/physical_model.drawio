@@ -1,0 +1,157 @@
+<mxfile host="65bd71144e">
+    <diagram id="physical-human-rules" name="人为编写物理知识">
+        <mxGraphModel dx="1449" dy="1001" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="物理模型（人为编写形式）&#10;人工定性规则库 × 运行时证据匹配 → 判断动作&#10;因果/常态由人固化；公式/阈值仅用于强度打分，不定义「谁对谁有何功效」" style="text;html=1;strokeColor=none;fillColor=#FFFFFF;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="16" width="1440" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_rule" value="① 人为编写的定性物理知识库（静态固化 / 类 ROM）★" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="90" width="1520" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1" value="rule_water_fire&#10;水 —抑制→ 火&#10;hint: 灭火" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="135" width="160" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2" value="rule_gravity_ground&#10;引力 —期望→ 贴地&#10;违反则异常" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="135" width="180" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3" value="rule_support_stable&#10;稳定 —需要→ 接触支撑" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="460" y="135" width="180" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4" value="rule_cliff_fall&#10;悬崖 —冲突→ 前进&#10;hint: 回避" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="670" y="135" width="170" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5" value="rule_impact_stop&#10;碰撞 —期望→ 停/避" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="135" width="170" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6" value="rule_metal_conduct&#10;金属 —增强→ 导电&#10;(示例扩展)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1070" y="135" width="170" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="rnote" value="人写&#10;不公式推导" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1280" y="155" width="240" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_evid" value="② 运行时证据 Evidence（传感浓缩：有没有 / 多强）" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="280" width="1520" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" value="evid_has_fire&#10;有火?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="325" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" value="evid_has_water&#10;有水?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="325" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" value="evid_ground_contact&#10;贴地/支撑?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="325" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4" value="evid_airborne&#10;离地异常?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="325" width="130" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e5" value="evid_cliff&#10;悬崖?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="690" y="325" width="120" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" value="evid_near_obstacle&#10;近障?" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="325" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" value="evid_collision&#10;碰撞风险 0..3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1010" y="325" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="e8" value="score_collision&#10;阈值打分(辅)&#10;非因果来源" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontStyle=1;fontColor=#111111;dashed=1;" parent="1" vertex="1">
+                    <mxGeometry x="1180" y="325" width="160" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="enote" value="传感回答「事实」&#10;规则回答「意味着什么」" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1370" y="335" width="170" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_match" value="③ 匹配器 match_rules（证据 × 人工规则 → hit_*）" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="450" width="1000" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_aux" value="④ 阈值仅打分" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1060" y="450" width="500" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="h1" value="hit_water_fire" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="500" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="h2" value="hit_gravity_ground" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="500" width="160" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="h3" value="hit_cliff_fall" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="500" width="140" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="h4" value="hit_impact_stop" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="600" y="500" width="150" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="h5" value="hit_support_stable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="780" y="500" width="160" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="aux1" value="近障档 + 速度档&#10;→ score_collision&#10;只抬升 evid 强度&#10;不创建「应否停止」" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;align=left;spacingLeft=8;fontSize=11;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="1090" y="495" width="440" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_judge" value="⑤ 判断输出 Judgement" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="610" width="900" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="L_sc" value="⑥ 测试场景（人工规则命中）" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="610" width="600" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="j1" value="judge_action&#10;0 KEEP&#10;3 STOP  4 EXTINGUISH&#10;5 RECOVER_GROUND  6 AVOID_CLIFF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="655" width="280" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="j2" value="judge_rule_id&#10;命中哪条人工规则" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="370" y="655" width="220" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="j3" value="judge_note&#10;附加说明/分数" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="655" width="180" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="sc" value="S1 火+水 → EXTINGUISH&#10;S2 离地 → RECOVER_GROUND&#10;S3 悬崖 → AVOID_CLIFF&#10;S4 近障+规则 → STOP&#10;S5 无命中 → KEEP" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="990" y="650" width="540" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="foot" value="与神经元层: 人工规则 ≈ 关联存储 n..q 固化项；匹配 ≈ 关系层 r/s；judge_action ≈ 决策 t/u。事务驱动时：每条证据/命中/动作均可做成一次 req/ack 事务。" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=10;fontSize=11;fontColor=#111111;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="780" width="1520" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="c1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d79b00;dashed=1;fontColor=#111111;" parent="1" source="r1" target="h1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d79b00;dashed=1;fontColor=#111111;" parent="1" source="r2" target="h2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d79b00;dashed=1;fontColor=#111111;" parent="1" source="r4" target="h3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d79b00;dashed=1;fontColor=#111111;" parent="1" source="r5" target="h4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#6c8ebf;fontColor=#111111;" parent="1" source="e1" target="h1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c6" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#6c8ebf;fontColor=#111111;" parent="1" source="e2" target="h1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c7" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#6c8ebf;fontColor=#111111;" parent="1" source="e4" target="h2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c8" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#6c8ebf;fontColor=#111111;" parent="1" source="e5" target="h3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c9" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#6c8ebf;fontColor=#111111;" parent="1" source="e7" target="h4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c10" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#666666;dashed=1;fontColor=#111111;" parent="1" source="e8" target="e7" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c11" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d6b656;fontColor=#111111;" parent="1" source="h1" target="j1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c12" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d6b656;fontColor=#111111;" parent="1" source="h2" target="j1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c13" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d6b656;fontColor=#111111;" parent="1" source="h3" target="j1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c14" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#d6b656;fontColor=#111111;" parent="1" source="h4" target="j1" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c15" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=1;strokeColor=#b85450;fontColor=#111111;" parent="1" source="j1" target="j2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
