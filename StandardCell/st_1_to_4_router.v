@@ -7,8 +7,10 @@ module st_1_to_4_router(
     output[31:0] token_out4
 );
 
-    assign data_out1 = data_in;
-    assign data_out2 = data_in;
-    assign data_out3 = data_in;
-    assign data_out4 = data_in;
+    assign token_out1 = token_in;
+    assign token_out2 = token_in;
+    assign token_out3 = token_in;
+    assign token_out4 = token_in;
+
+
 endmodule

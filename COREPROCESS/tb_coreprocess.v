@@ -21,7 +21,11 @@ module tb_coreprocess;
     st_event_register event_h1(.data_in(device_h[7:0]),.en(en_h1),.ack(ack),.data_out(device_out_h1),.req(valid_h1));
     
     st_token_generator token_gen_z(device_out_z,type_z,source_id,flags,token_z,valid_z);
+
+    //wire[31:0] token_out1, token_out2,token_out3,token_out4;
     st_1_to_4_router router_z(token_z,valid_z,token_out1,token_out2,token_out3,token_out4);
+
+    st_formula second_newton_law ();
 
 
     // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));

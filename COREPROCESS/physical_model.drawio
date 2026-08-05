@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="physical-human-rules" name="人为编写物理知识">
-        <mxGraphModel dx="1449" dy="1001" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1460" dy="670" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -28,7 +28,7 @@
                 <mxCell id="r6" value="rule_metal_conduct&#10;金属 —增强→ 导电&#10;(示例扩展)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
                     <mxGeometry x="1070" y="135" width="170" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="rnote" value="人写&#10;不公式推导" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
+                <mxCell id="rnote" value="人写&#10;不公式推导" style="text;html=1;strokeColor=none;fillColor=#CCCCCC;align=center;fontSize=11;fontStyle=1;fontColor=#111111;" parent="1" vertex="1">
                     <mxGeometry x="1280" y="155" width="240" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="L_evid" value="② 运行时证据 Evidence（传感浓缩：有没有 / 多强）" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
@@ -58,7 +58,7 @@
                 <mxCell id="e8" value="score_collision&#10;阈值打分(辅)&#10;非因果来源" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontStyle=1;fontColor=#111111;dashed=1;" parent="1" vertex="1">
                     <mxGeometry x="1180" y="325" width="160" height="70" as="geometry"/>
                 </mxCell>
-                <mxCell id="enote" value="传感回答「事实」&#10;规则回答「意味着什么」" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#111111;" parent="1" vertex="1">
+                <mxCell id="enote" value="传感回答「事实」&#10;规则回答「意味着什么」" style="text;html=1;strokeColor=none;fillColor=#B3B3B3;align=left;fontSize=11;fontColor=#111111;" parent="1" vertex="1">
                     <mxGeometry x="1370" y="335" width="170" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="L_match" value="③ 匹配器 match_rules（证据 × 人工规则 → hit_*）" style="swimlane;fontStyle=1;startSize=28;collapsible=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontColor=#111111;" parent="1" vertex="1">
