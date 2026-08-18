@@ -16,21 +16,19 @@ module tb_coreprocess;
     
     wire valid_z,valid_h0,valid_h1;
 
+    // en_z 发送控制信号告诉注册器可以读取信号了  
+    // ack 模拟后面时刻 告诉注册器已经处理完数据，可以释放数据了
     st_event_register event_z(.data_in(device_z[7:0]),.en(en_z),.ack(ack),.data_out(device_out_z),.req(valid_z));
     st_event_register event_h0(.data_in(device_h[7:0]),.en(en_h0),.ack(ack),.data_out(device_out_h0),.req(valid_h0));
     st_event_register event_h1(.data_in(device_h[7:0]),.en(en_h1),.ack(ack),.data_out(device_out_h1),.req(valid_h1));
     
+    // 事件添加到token包内 token增加额外信息
     st_token_generator token_gen_z(device_out_z,type_z,source_id,flags,token_z,valid_z);
 
-    //wire[31:0] token_out1, token_out2,token_out3,token_out4;
+    // 将token分发到不同路由
     st_1_to_4_router router_z(token_z,valid_z,token_out1,token_out2,token_out3,token_out4);
 
-    st_formula second_newton_law ();
-
-
-    // st_node node_z(.signal_in(device_z[7:0]),.en(en_z),.signal_out(device_out_z));
-    // st_node node_h0(.signal_in(device_h[7:0]),.en(grant_fst),.signal_out(device_out_h0));
-    // st_node node_h1(.signal_in(device_h[7:0]),.en(grant_sec),.signal_out(device_out_h1));
+    
     
     initial begin
         device_a = 0; device_b = 0; device_c = 0; device_d = 0; device_e = 0; device_f = 0;

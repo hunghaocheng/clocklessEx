@@ -3,6 +3,6 @@ module st_node(
     input wire en,
     output wire[7:0] signal_out
 );
-    st_fifo 
+
 
 endmodule
