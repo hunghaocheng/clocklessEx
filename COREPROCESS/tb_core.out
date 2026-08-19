@@ -7,75 +7,73 @@
 :vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
 :vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
 :vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
-S_00000193b4618e70 .scope module, "tb_storage" "tb_storage" 2 2;
+S_000001fae0b37a90 .scope module, "tb_storage" "tb_storage" 2 2;
  .timescale -12 -12;
-L_00000193b464e6f0 .functor BUFZ 8, L_00000193b4617930, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b4618330_0 .array/port v00000193b4618330, 0;
-L_00000193b464e1b0 .functor BUFZ 8, v00000193b4618330_0, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b4618330_1 .array/port v00000193b4618330, 1;
-L_00000193b464e760 .functor BUFZ 8, v00000193b4618330_1, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b4618330_2 .array/port v00000193b4618330, 2;
-L_00000193b464e5a0 .functor BUFZ 8, v00000193b4618330_2, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b4618330_3 .array/port v00000193b4618330, 3;
-L_00000193b464e530 .functor BUFZ 8, v00000193b4618330_3, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b4618330_4 .array/port v00000193b4618330, 4;
-L_00000193b464ec30 .functor BUFZ 8, v00000193b4618330_4, C4<00000000>, C4<00000000>, C4<00000000>;
-v00000193b46181f0_0 .net *"_ivl_0", 7 0, L_00000193b4617930;  1 drivers
-o00000193b46541e8 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
-v00000193b4617bb0_0 .net "flash_addr", 7 0, o00000193b46541e8;  0 drivers
-v00000193b4617b10_0 .net "flash_rdata", 7 0, L_00000193b464e6f0;  1 drivers
-v00000193b4618290_0 .var "memo_trans_type", 7 0;
-v00000193b4618330 .array "tb_flash", 15 0, 7 0;
-v00000193b4618470_0 .net "tb_flash_0", 7 0, L_00000193b464e1b0;  1 drivers
-v00000193b4617a70_0 .net "tb_flash_1", 7 0, L_00000193b464e760;  1 drivers
-v00000193b4618510_0 .net "tb_flash_2", 7 0, L_00000193b464e5a0;  1 drivers
-v00000193b46180b0_0 .net "tb_flash_3", 7 0, L_00000193b464e530;  1 drivers
-v00000193b4618010_0 .net "tb_flash_4", 7 0, L_00000193b464ec30;  1 drivers
-v00000193b4618790_0 .var "valid_memo", 0 0;
-L_00000193b4617930 .array/port v00000193b4618330, o00000193b46541e8;
-S_00000193b464f300 .scope module, "flash_to_bram" "st_memo_register" 2 11, 3 1 0, S_00000193b4618e70;
+L_000001fae0b6e9d0 .functor BUFZ 8, L_000001fae0bbccf0, C4<00000000>, C4<00000000>, C4<00000000>;
+v000001fae0bbc7f0_0 .net *"_ivl_0", 7 0, L_000001fae0bbccf0;  1 drivers
+o000001fae0b72fb8 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v000001fae0bbc890_0 .net "flash_addr", 7 0, o000001fae0b72fb8;  0 drivers
+v000001fae0bbc1b0_0 .net "flash_rdata", 7 0, L_000001fae0b6e9d0;  1 drivers
+v000001fae0bbcbb0_0 .var "memo_trans_type", 7 0;
+v000001fae0bbc250 .array "tb_flash", 15 0, 7 0;
+v000001fae0bbc750_0 .var "valid_memo", 0 0;
+L_000001fae0bbccf0 .array/port v000001fae0bbc250, o000001fae0b72fb8;
+S_000001fae0b70950 .scope module, "flash_to_bram" "st_memo_register" 2 11, 3 1 0, S_000001fae0b37a90;
  .timescale -9 -9;
     .port_info 0 /INPUT 8 "memo_type";
     .port_info 1 /INPUT 1 "valid_memo";
-L_00000193b464f020 .functor AND 1, v00000193b4618790_0, L_00000193b4617c50, C4<1>, C4<1>;
-L_00000193b464e990 .functor AND 1, v00000193b4618790_0, L_00000193b4617cf0, C4<1>, C4<1>;
-L_00000193b4a20088 .functor BUFT 1, C4<00000010>, C4<0>, C4<0>, C4<0>;
-v00000193b46186f0_0 .net/2u *"_ivl_0", 7 0, L_00000193b4a20088;  1 drivers
-v00000193b4617f70_0 .net *"_ivl_2", 0 0, L_00000193b4617c50;  1 drivers
-L_00000193b4a200d0 .functor BUFT 1, C4<00000100>, C4<0>, C4<0>, C4<0>;
-v00000193b4617e30_0 .net/2u *"_ivl_6", 7 0, L_00000193b4a200d0;  1 drivers
-v00000193b46185b0_0 .net *"_ivl_8", 0 0, L_00000193b4617cf0;  1 drivers
-v00000193b46179d0_0 .net "do_BRAMToflash", 0 0, L_00000193b464e990;  1 drivers
-v00000193b4618650_0 .net "do_flashToBRAM", 0 0, L_00000193b464f020;  1 drivers
-v00000193b46183d0_0 .net "memo_type", 7 0, v00000193b4618290_0;  1 drivers
-v00000193b4618150_0 .net "valid_memo", 0 0, v00000193b4618790_0;  1 drivers
-L_00000193b4617c50 .cmp/eq 8, v00000193b4618290_0, L_00000193b4a20088;
-L_00000193b4617cf0 .cmp/eq 8, v00000193b4618290_0, L_00000193b4a200d0;
-    .scope S_00000193b4618e70;
+    .port_info 2 /OUTPUT 8 "memo_addr";
+    .port_info 3 /INPUT 8 "memo_data";
+L_000001fae0b6e730 .functor AND 1, v000001fae0bbc750_0, L_000001fae0bbc6b0, C4<1>, C4<1>;
+L_000001fae0b6ec70 .functor AND 1, v000001fae0bbc750_0, L_000001fae0bbcf70, C4<1>, C4<1>;
+L_000001fae0f40088 .functor BUFT 1, C4<00000010>, C4<0>, C4<0>, C4<0>;
+v000001fae0b70d10_0 .net/2u *"_ivl_0", 7 0, L_000001fae0f40088;  1 drivers
+v000001fae0bbc610_0 .net *"_ivl_2", 0 0, L_000001fae0bbc6b0;  1 drivers
+L_000001fae0f400d0 .functor BUFT 1, C4<00000100>, C4<0>, C4<0>, C4<0>;
+v000001fae0bbc570_0 .net/2u *"_ivl_6", 7 0, L_000001fae0f400d0;  1 drivers
+v000001fae0bbc4d0_0 .net *"_ivl_8", 0 0, L_000001fae0bbcf70;  1 drivers
+v000001fae0bbc430_0 .net "do_BRAMToflash", 0 0, L_000001fae0b6ec70;  1 drivers
+v000001fae0bbcd90_0 .net "do_flashToBRAM", 0 0, L_000001fae0b6e730;  1 drivers
+v000001fae0bbc9d0_0 .net "memo_addr", 7 0, o000001fae0b72fb8;  alias, 0 drivers
+v000001fae0bbc070_0 .net "memo_data", 7 0, L_000001fae0b6e9d0;  alias, 1 drivers
+v000001fae0bbce30_0 .net "memo_type", 7 0, v000001fae0bbcbb0_0;  1 drivers
+v000001fae0bbced0_0 .net "valid_memo", 0 0, v000001fae0bbc750_0;  1 drivers
+L_000001fae0bbc6b0 .cmp/eq 8, v000001fae0bbcbb0_0, L_000001fae0f40088;
+L_000001fae0bbcf70 .cmp/eq 8, v000001fae0bbcbb0_0, L_000001fae0f400d0;
+S_000001fae0b70ae0 .scope module, "flashToBRAM" "st_flash_to_bram" 3 10, 4 1 0, S_000001fae0b70950;
+ .timescale -9 -9;
+    .port_info 0 /OUTPUT 8 "memo_addr";
+    .port_info 1 /INPUT 8 "memo_data";
+    .port_info 2 /OUTPUT 1 "valid";
+v000001fae0b136f0_0 .net "memo_addr", 7 0, o000001fae0b72fb8;  alias, 0 drivers
+v000001fae0b5b0b0_0 .net "memo_data", 7 0, L_000001fae0b6e9d0;  alias, 1 drivers
+v000001fae0b70c70_0 .net "valid", 0 0, L_000001fae0b6e730;  alias, 1 drivers
+    .scope S_000001fae0b37a90;
 T_0 ;
-    %vpi_call 2 8 "$readmemh", "STORAGE/flash_memo.hex", v00000193b4618330 {0 0 0};
+    %vpi_call 2 8 "$readmemh", "STORAGE/flash_memo.hex", v000001fae0bbc250 {0 0 0};
     %end;
     .thread T_0;
-    .scope S_00000193b4618e70;
+    .scope S_000001fae0b37a90;
 T_1 ;
-    %vpi_call 2 19 "$dumpfile", "tb_core.vcd" {0 0 0};
-    %vpi_call 2 20 "$dumpvars", 32'sb00000000000000000000000000000000, S_00000193b4618e70 {0 0 0};
+    %vpi_call 2 14 "$dumpfile", "tb_core.vcd" {0 0 0};
+    %vpi_call 2 15 "$dumpvars", 32'sb00000000000000000000000000000000, S_000001fae0b37a90 {0 0 0};
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000193b4618790_0, 0, 1;
+    %store/vec4 v000001fae0bbc750_0, 0, 1;
     %pushi/vec4 2, 0, 8;
-    %store/vec4 v00000193b4618290_0, 0, 8;
+    %store/vec4 v000001fae0bbcbb0_0, 0, 8;
     %delay 5, 0;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000193b4618790_0, 0, 1;
+    %store/vec4 v000001fae0bbc750_0, 0, 1;
     %delay 10, 0;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000193b4618790_0, 0, 1;
+    %store/vec4 v000001fae0bbc750_0, 0, 1;
     %delay 10, 0;
     %end;
     .thread T_1;
 # The file index is used to find the file name in the following table.
-:file_names 4;
+:file_names 5;
     "N/A";
     "<interactive>";
     "STORAGE/tb_storage.v";
     "STORAGE/st_memo_register.v";
+    "STORAGE/st_flash_to_bram.v";

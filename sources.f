@@ -7,4 +7,5 @@ StandardCell/st_token_generator.v
 StandardCell/st_1_to_4_router.v
 
 STORAGE/st_memo_register.v
+STORAGE/st_flash_to_bram.v
 STORAGE/tb_storage.v
