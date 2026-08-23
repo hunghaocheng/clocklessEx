@@ -7,20 +7,19 @@ module tb_storage;
     wire[7:0] flash_addr, flash_rdata;
     initial $readmemh("STORAGE/flash_memo.hex",tb_flash);
     assign flash_rdata = tb_flash[flash_addr];
-
+    assign flash_1 = tb_flash[0];
+    assign flash_2 = tb_flash[1];
     st_memo_register flash_to_bram(memo_trans_type, valid_memo, flash_addr, flash_rdata);
     
     initial begin
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_storage);
-
         valid_memo = 1'b0;
         memo_trans_type = 8'b00000010;
         #5;
         valid_memo = 1'b1;
-        #10;
+        #5;
         valid_memo= 1'b0;
-        #10;
-        
+        #5;
     end
-endmodule
+endmodule  

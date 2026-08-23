@@ -1,9 +1,10 @@
 module st_flash_to_bram(
     output wire[7:0] memo_addr,
     input wire[7:0] memo_data,
-    output wire valid
+    input wire valid,
+    output wire req
 );
-
-    reg[7:0] first_mula_bram[15:0];
-    first_mula_bram[]
+    
+    wire[7:0] data_out;
+    st_mula_bram bram0(memo_data,valid,data_out,req);
 endmodule
