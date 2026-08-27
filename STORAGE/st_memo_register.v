@@ -1,8 +1,8 @@
 module st_memo_register(
     input wire[7:0] memo_type,
     input wire valid_memo,
-    input wire[7:0] memo_addr_0,
-    input wire[7:0] memo_data,
+    input wire[31:0] memo_addr_0,
+    input wire[31:0] memo_data,
     input wire[7:0] memo_acks
 );
     wire do_flashToBRAM = valid_memo && (memo_type == 8'b00000010);
