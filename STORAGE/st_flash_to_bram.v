@@ -1,5 +1,4 @@
 module st_flash_to_bram(
-    output wire[31:0] memo_addr,
     input wire[31:0] memo_data,
     input wire valid,
     output wire req,
