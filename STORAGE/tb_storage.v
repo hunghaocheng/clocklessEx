@@ -1,28 +1,31 @@
 `timescale 1ps/1ps
 module tb_storage;
-    reg[7:0] memo_trans_type;
-    wire[7:0] flash_addr;
+    reg[7:0] memo_type;
+    wire[7:0] memo_addr;
     reg valid_memo;
 
-    reg [31:0] tb_flash [0:1023];
     wire[31:0]  flash_rdata, flash_0, flash_1, flash_2, flash_3;
+    reg [31:0] tb_flash [0:1023];
     initial $readmemh("STORAGE/flash_memo.hex",tb_flash);
-    assign flash_rdata = tb_flash[flash_addr];
+    wire[31:0] memo_data;
+    assign memo_data = tb_flash[memo_addr];
     reg reset;
-    assign memo_acks = 8'b00000000;
-    st_memo_register _st_memo_register(memo_trans_type, valid_memo, flash_rdata,memo_acks,flash_addr,reset);
+    reg[7:0] memo_acks;
+    //assign memo_acks = 8'b00000000;
+    st_memo_register _st_memo_register(memo_type, valid_memo, memo_data,memo_acks,memo_addr,reset);
     
     initial begin
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_storage);
-        //flash_addr = 8'b00000000;
+       // memo_addr = 8'b00000000;
         reset = 1'b1;
-        //valid_memo= 1'b0; 
+        memo_acks = 8'b00000000;
+        valid_memo= 1'b0; 
         #2;
         reset = 1'b0;
         #3;
         //valid_memo= 1'b0; 
-        memo_trans_type = 8'b00000010;
+        memo_type = 8'b00000010;
         #5;//1st
         valid_memo = 1'b1;
         #1;
