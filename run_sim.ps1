@@ -5,21 +5,14 @@
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
-$Top     = "tb_coreprocess"
-$OutDir  = "COREPROCESS"
-$OutFile = Join-Path $OutDir "$Top.out"
-$VcdFile = Join-Path $OutDir "tb_core.vcd"
-
-# Sources required by the current testbench (avoid WIP modules in root filelist.f)
-$Sources = @(
-    "StandardCell/st_latch.v"
-    "StandardCell/st_8_latch.v"
-    "StandardCell/st_event_register.v"
-    "COREPROCESS/tb_coreprocess.v"
-)
+$Top      = "tb_coreprocess"
+$OutDir   = "COREPROCESS"
+$OutFile  = Join-Path $OutDir "$Top.out"
+$VcdFile  = Join-Path $OutDir "tb_core.vcd"
+$FileList = "filelist.f"
 
 Write-Host "==> Compiling with iverilog ..."
-& iverilog -o $OutFile -s $Top @Sources
+& iverilog -o $OutFile -s $Top -c $FileList
 if ($LASTEXITCODE -ne 0) {
     Write-Error "iverilog failed (exit $LASTEXITCODE)"
     exit $LASTEXITCODE

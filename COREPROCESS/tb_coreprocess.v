@@ -1,6 +1,6 @@
 `timescale 1ns/1ns
 /* 
-    iverilog -o ./COREPROCESS/tb_core.out -c ./COREPROCESS/sources.f 
+    iverilog -o ./COREPROCESS/tb_core.out -s tb_coreprocess -c filelist.f
 */
 module tb_coreprocess;
     reg[31:0] device_a, device_b, device_c, device_d, device_e, device_f,

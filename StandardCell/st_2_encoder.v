@@ -3,16 +3,9 @@ module st_2_encoder(
     output grant_fst,
     output grant_sec
 );
-    
-    // req_fst     req_sec      grant_fst      grant_sec; 
-    //    1            1            1              0
-    //    1            0            1              0
-    //    0            1            0              1
-    //    0            0            0              0     
-    reg  req_out, req_inv;
-    st_latch status(req,0'b1,req_out, req_inv);
-    grant_fst = req;
-    grant_sec = ~grant_fst & grant_sec;
-
-
+    // WIP encoder: req high grants first channel
+    wire req_out, req_inv;
+    st_latch status(.data(req), .en(1'b1), .Y(req_out), .Yn(req_inv), .reset(1'b0));
+    assign grant_fst = req_out;
+    assign grant_sec = ~grant_fst;
 endmodule

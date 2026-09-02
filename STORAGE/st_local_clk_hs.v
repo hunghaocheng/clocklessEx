@@ -47,8 +47,8 @@ module st_local_clk_hs (
     st_latch u_p2(
         .data(p2_d),
         .en(p2_en),
-        .Y(p1_done),
-        .Yn(p1_n),
+        .Y(p2_done),
+        .Yn(p2_n),
         .reset(1'b0)
     );
 

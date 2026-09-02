@@ -12,6 +12,6 @@ module st_mutex(
     not t_not2(not_last_A, last_A);
     and t_and2(last_B, B, not_last_A);
 
-    out_A = last_A;
-    out_B = last_B;
+    assign out_A = last_A;
+    assign out_B = last_B;
 endmodule

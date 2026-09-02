@@ -20,13 +20,11 @@ module tb_storage;
        // memo_addr = 8'b00000000;
         reset = 1'b1;
         memo_acks = 8'b00000000;
-        valid_memo= 1'b0; 
-        #2;
-        reset = 1'b0;
-        #3;
-        //valid_memo= 1'b0; 
         memo_type = 8'b00000010;
-        #5;//1st
+        valid_memo= 1'b0; 
+        #1;
+        reset = 1'b0;
+        #1;
         valid_memo = 1'b1;
         #1;
         valid_memo= 1'b0;
