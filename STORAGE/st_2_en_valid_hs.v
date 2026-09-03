@@ -14,5 +14,4 @@ module st_2_en_valid_hs (
     st_local_clk_hs clk(reset, valid_memo, addr_a, addr_b, addr_next, en_a, en_b, busy);
 
     assign addr_out = addr_b;
-
 endmodule

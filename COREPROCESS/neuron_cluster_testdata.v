@@ -4,7 +4,7 @@
 // 说明: 神经元集群测试数据（与 COREPROCESS 中 device_a..device_z 一一对应）
 // 用法: 可单独仿真，或将 initial 块中的赋值迁入 tb_coreprocess
 //
-// 编码约定 (每个 device 低 8bit 作为事件载荷，供 st_event_register 捕获):
+// 编码约定 (每个 device 低 8bit 作为事件载荷，供 st_8_2ske_latch 捕获):
 //   [7:6] 通道/模态类别
 //   [5:4] 优先级 (0=低 .. 3=高)
 //   [3:0] 事件编号 / 特征码

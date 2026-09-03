@@ -13,12 +13,13 @@ StandardCell/st_2_encoder.v
 StandardCell/st_latch.v
 StandardCell/st_8_latch.v
 StandardCell/st_32_latch.v
+StandardCell/st_32_2ske_latch.v
 StandardCell/st_half_adder.v
 StandardCell/st_full_adder.v
 StandardCell/st_4bit_adder.v
 StandardCell/st_8bit_adder.v
 StandardCell/st_16bit_adder.v
-StandardCell/st_event_register.v
+StandardCell/st_8_2ske_latch.v
 StandardCell/st_fifo.v
 StandardCell/st_token_generator.v
 StandardCell/st_1_to_4_router.v

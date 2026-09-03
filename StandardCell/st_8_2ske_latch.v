@@ -1,9 +1,9 @@
-module st_event_register(
+module st_8_2ske_latch(
     input[7:0] data_in,
-    input en,
-    input ack,
+    input en,//默认约定是上游自己看 req 再决定 en是否打开
+    input ack,   
     output[7:0] data_out,
-    output req,
+    output req, // 拉高时候表示数据已经进入latch 但如果en再次拉高 会冲刷数据 
     input reset
 );
     wire[7:0] data_inv;

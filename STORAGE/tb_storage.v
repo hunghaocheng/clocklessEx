@@ -4,22 +4,21 @@ module tb_storage;
     wire[7:0] memo_addr;
     reg valid_memo;
 
-    wire[31:0]  flash_rdata, flash_0, flash_1, flash_2, flash_3;
     reg [31:0] tb_flash [0:1023];
     initial $readmemh("STORAGE/flash_memo.hex",tb_flash);
-    wire[31:0] memo_data;
-    assign memo_data = tb_flash[memo_addr];
+
+    wire[31:0] memo_data = tb_flash[memo_addr];
     reg reset;
-    reg[7:0] memo_acks;
-    //assign memo_acks = 8'b00000000;
-    st_memo_register _st_memo_register(memo_type, valid_memo, memo_data,memo_acks,memo_addr,reset);
+    reg ack;
+    wire req;
+    st_memo_register _st_memo_register(memo_type, valid_memo, memo_data,memo_addr,ack,req,reset);
     
     initial begin
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_storage);
        // memo_addr = 8'b00000000;
         reset = 1'b1;
-        memo_acks = 8'b00000000;
+        ack = 1'b0;
         memo_type = 8'b00000010;
         valid_memo= 1'b0; 
         #1;
