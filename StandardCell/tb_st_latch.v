@@ -1,18 +1,22 @@
 `timescale 1ns/1ns
 module tb_st_latch;
 
-    reg data, en;
-    wire Y, Yn;
-    st_latch t_latch(.data(data),.en(en),.Y(Y),.Yn(Yn));
+    reg [31:0] data;
+    reg en;
+    reg reset;
+    st_32_latch t_latch(.data(data),.en(en),.Y(Y),.Yn(Yn),.reset(reset));
     initial begin
         
         $dumpfile("tb_st_latch.vcd");
         $dumpvars(0,t_latch);
-        force t_latch.Y = 0;
-        force t_latch.Yn = 0;
-        data = 0;
+        reset= 1'b1;
+        data = 32'h00000000;
+        en = 0;
+        #1;
+        reset = 1'b0;
+        data = 32'h000000A2;
         en = 1;
-        #20;
+        #3;
 
         $finish;
     end

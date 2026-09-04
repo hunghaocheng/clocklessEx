@@ -50,10 +50,8 @@ module tb_storage;
         #1;//7th
         valid_memo = 1'b1;
         #1;
-        valid_memo= 1'b0;
-        #1;//8th
         valid_memo = 1'b0;
-        #1;
+        #1;//8th
         valid_memo = 1'b1;
         #1;
         valid_memo= 1'b0;
