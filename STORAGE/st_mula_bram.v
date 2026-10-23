@@ -3,16 +3,19 @@ module st_mula_bram (
     input wire memo_valid,
     input wire[7:0] memo_addr,
     input wire ack,
-    output wire req,
+    output wire[7:0] reqs_out,
     input reset
 );
-    wire req_0, req_1, req_2, req_3;
+    wire req_0, req_1, req_2, req_3, req_4, req_5, req_6, req_7;
 
-    wire[31:0] data_out_0 ,data_out_1, data_out_2, data_out_3;
+    wire[31:0] data_out_0 ,data_out_1, data_out_2, data_out_3, data_out_4, data_out_5, data_out_6, data_out_7;
     st_32_2ske_latch _32latch0(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000000)),.ack(ack),.data_out(data_out_0),.req(req_0),.reset(reset));
     st_32_2ske_latch _32latch1(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000001)),.ack(ack),.data_out(data_out_1),.req(req_1),.reset(reset));
     st_32_2ske_latch _32latch2(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000010)),.ack(ack),.data_out(data_out_2),.req(req_2),.reset(reset));
     st_32_2ske_latch _32latch3(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000011)),.ack(ack),.data_out(data_out_3),.req(req_3),.reset(reset));
-
-    assign req = req_0 | req_1 | req_2 | req_3;
+    st_32_2ske_latch _32latch4(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000100)),.ack(ack),.data_out(data_out_4),.req(req_4),.reset(reset));
+    st_32_2ske_latch _32latch5(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000101)),.ack(ack),.data_out(data_out_5),.req(req_5),.reset(reset));
+    st_32_2ske_latch _32latch6(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000110)),.ack(ack),.data_out(data_out_6),.req(req_6),.reset(reset));
+    st_32_2ske_latch _32latch7(.data_in(data),.en(memo_valid  & (memo_addr == 8'b00000111)),.ack(ack),.data_out(data_out_7),.req(req_7),.reset(reset));
+    assign reqs_out = {req_7, req_6, req_5, req_4, req_3, req_2, req_1, req_0};
 endmodule

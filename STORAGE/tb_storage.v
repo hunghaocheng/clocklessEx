@@ -10,9 +10,8 @@ module tb_storage;
     wire[31:0] memo_data = tb_flash[memo_addr];
     reg reset;
     reg ack;
-    wire req;
-    st_memo_register _st_memo_register(memo_type, valid_memo, memo_data,memo_addr,ack,req,reset);
-    
+    wire[7:0] reqs_out;
+    st_memo_register _st_memo_register(memo_type, valid_memo, memo_data,memo_addr,ack,reqs_out,reset);
     initial begin
         $dumpfile("tb_core.vcd");
         $dumpvars(0,tb_storage);
@@ -20,17 +19,17 @@ module tb_storage;
         reset = 1'b1;
         ack = 1'b0;
         memo_type = 8'b00000010;
-        valid_memo= 1'b0; 
+        valid_memo= 1'b0;
         #1;
         reset = 1'b0;
         #1;
         valid_memo = 1'b1;
         #1;
-        valid_memo= 1'b0;
+        valid_memo = 1'b0;
         #1;//2nd
         valid_memo = 1'b1;
         #1;
-        valid_memo= 1'b0;
+        valid_memo = 1'b0;
         #1;//3rd
         valid_memo = 1'b1;
         #1;
@@ -61,6 +60,9 @@ module tb_storage;
         valid_memo= 1'b0;
         #1;//10th
         valid_memo = 1'b1;
-        #1;
+        #15;
+
+        
+        $finish;
     end
-endmodule  
+endmodule
