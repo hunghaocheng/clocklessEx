@@ -20,7 +20,7 @@ module tb_storage;
         ack = 1'b0;
         memo_type = 8'b00000010;
         valid_memo= 1'b0;
-        #1;
+        #3;
         reset = 1'b0;
         #1;
         valid_memo = 1'b1;
@@ -60,9 +60,23 @@ module tb_storage;
         valid_memo= 1'b0;
         #1;//10th
         valid_memo = 1'b1;
-        #15;
-
-        
+        #5;
+        ack = 1'b1;
+        #1;
+        ack = 1'b0;
+        #1;
+        valid_memo = 1'b0;
+        #1;
+        valid_memo = 1'b1;
+        #1;
+        valid_memo = 1'b0;
+        #1;
+        valid_memo = 1'b1;
+        #1;
+        valid_memo = 1'b0;
+        #1;
+        valid_memo = 1'b1;
+        #2;
         $finish;
     end
 endmodule
