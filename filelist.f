@@ -12,6 +12,8 @@ StandardCell/st_glitch_free_mux.v
 StandardCell/st_2_encoder.v
 StandardCell/st_latch.v
 StandardCell/st_8_latch.v
+StandardCell/st_3_latch.v
+StandardCell/st_3bit_adder.v
 StandardCell/st_32_latch.v
 StandardCell/st_32_2ske_latch.v
 StandardCell/st_half_adder.v
@@ -49,7 +51,8 @@ STORAGE/st_mula_bram.v
 STORAGE/st_flash_to_bram.v
 STORAGE/st_memo_register.v
 STORAGE/st_local_clk_hs.v
-STORAGE/st_2_en_valid_hs.v
+STORAGE/st_3bit_8_stepper.v
+STORAGE/st_8bit_256_stepper.v
 
 # ---------- GUI ----------
 GUI/ddr3_frame.v
