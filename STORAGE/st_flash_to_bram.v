@@ -9,10 +9,7 @@ module st_flash_to_bram(
 );
     wire req = reqs_out[0] | reqs_out[1] | reqs_out[2] | reqs_out[3] | reqs_out[4] | reqs_out[5] | reqs_out[6] | reqs_out[7];
     wire valid = memo_valid & req;
-    
-    wire kicked, kicked_n;
-    st_latch u_kicked(.data(1'b1), .en(|memo_addr), .Y(kicked), .Yn(kicked_n), .reset(reset));
-    wire kick = ~reset & ~kicked;
-    st_8bit_256_stepper u_hs(reset, kick | (~memo_valid & req), memo_addr);
+
+    st_8bit_256_stepper u_hs(reset, ~memo_valid & req, memo_addr);
     st_mula_bram mula(memo_data, memo_valid, memo_addr, ack, reqs_out, reset);
 endmodule
