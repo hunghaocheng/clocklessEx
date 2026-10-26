@@ -49,11 +49,11 @@ module tb_storage;
         #1;//7th
         valid_memo = 1'b1;
         #1;
+        valid_memo = 1'b0;
+        #1;
         ack = 1'b1;
         #1;
         ack = 1'b0;
-        #1;
-        valid_memo = 1'b0;
         #1;//8th
         valid_memo = 1'b1;
         #1;
@@ -63,46 +63,44 @@ module tb_storage;
         #1;
         valid_memo= 1'b0;
         #1;//10th
-        valid_memo = 1'b1;       
-        #1;
-        valid_memo = 1'b0;
-        #1;// 11th
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 12th
+        #1;
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 13th  
+        #1;
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 14th  
+        #1;
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 15th
+        #1;
         valid_memo = 1'b1;
+        #1;
+        valid_memo = 1'b0;
+        #1;
+        valid_memo = 1'b1;
+        #1;
+        valid_memo = 1'b0;
         #1;
         ack = 1'b1;
         #1;
         ack = 1'b0;
         #1;
-        valid_memo = 1'b0;
-        #1;// 16th
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 17th
+        #1;
         valid_memo = 1'b1;
         #1;
         valid_memo = 1'b0;
-        #1;// 18th
-        valid_memo = 1'b1;
         #1;
-        valid_memo = 1'b0;
-        #10;
+        valid_memo = 1'b1;
+        #2;
         $finish;
     end
 endmodule
