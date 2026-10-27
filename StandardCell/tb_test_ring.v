@@ -32,6 +32,10 @@ module tb_test_ring;
         enable = 1'b0;
         #5;
         enable = 1'b1;
+        #10;
+        ack = 1'b1;
+        #1;
+        ack = 1'b0;
         #20;
         $finish;
     end
