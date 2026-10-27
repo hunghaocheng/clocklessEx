@@ -28,15 +28,19 @@ module tb_test_ring;
         reset = 1'b0;
         #1;
         enable = 1'b1;
-        #20;
+        #10;
         enable = 1'b0;
         #5;
         enable = 1'b1;
-        #10;
+        #20;
         ack = 1'b1;
         #1;
         ack = 1'b0;
         #20;
+        ack = 1'b1;
+        #1;
+        ack = 1'b0;
+        #30;
         $finish;
     end
 endmodule
