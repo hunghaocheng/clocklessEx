@@ -14,8 +14,8 @@ module tb_test_ring;
     //st_3bit_8_stepper hs(.reset(reset), .valid_memo(ring_out), .addr_out(addr_out));
 
     //st_8bit_256_stepper hs(.reset(reset), .valid_memo(ring_out), .addr_out(memo_addr));
-    assign addr_out = memo_addr[2:0];
-    wire addr_rst = ~addr_out[2] & ~addr_out[1] & ~addr_out[0];
+    //assign addr_out = memo_addr[2:0];
+    //wire addr_rst = ~addr_out[2] & ~addr_out[1] & ~addr_out[0];
     reg ack;
     st_flash_to_bram bram(.memo_data(memo_data),.memo_valid(ring_out),.memo_addr(memo_addr),.ack(ack),.reqs_out(reqs_out),.reset(reset));
     initial begin
