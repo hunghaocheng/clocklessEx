@@ -22,5 +22,11 @@ module st_processing_unit (
     st_32_2ske_latch g(.data_in(datas_in[223:192]),.en(ens[6] & ~reqs_out[6]),.ack(ack[6]),.data_out(data_out_g),.req(reqs_out[6]),.reset(reset));
     st_32_2ske_latch h(.data_in(datas_in[255:224]),.en(ens[7] & ~reqs_out[7]),.ack(ack[7]),.data_out(data_out_h),.req(reqs_out[7]),.reset(reset));
 
-    
+    wire[31:0] states_in;
+    assign states_in = 8'h00004000;
+    wire[31:0] formula;
+    wire[7:0] converge_out, pending_out, diverge_out;
+    st_cross_a a_formula(.data_in(data_out_a),.en(reqs_out[0]),.converge_out(converge_out),pending_out(pending_out),diverge_out(diverge_out),.reset(reset));
+
+
 endmodule
