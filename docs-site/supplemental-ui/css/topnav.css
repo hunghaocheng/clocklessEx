@@ -1,5 +1,3 @@
-.nav-container,
-.toolbar,
 aside.toc.sidebar,
 footer.footer {
   display: none !important;
@@ -39,9 +37,8 @@ footer.footer {
 }
 
 @media screen and (min-width: 1024px) {
-  .doc {
-    margin-left: auto;
-    margin-right: auto;
+  .toolbar {
+    display: none !important;
   }
 
   aside.toc.embedded {

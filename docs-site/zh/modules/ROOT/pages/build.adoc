@@ -4,7 +4,7 @@
 
 本站是仓库里的一个独立 Antora 组件，源文件都在 `docs-site/`，不参与 Verilog 编译。生成之后是一组静态 HTML，浏览器直接打开即可。
 
-顶栏左侧是「EN / 中文」，右侧是 BLOG、ABOUT、CONTACT。站点入口是英文概述页。BLOG 进入当前语言的正文，ABOUT 进入当前语言的 Apache License 2.0，CONTACT 是联系方式。同一页的另一种语言用顶栏左侧切换。界面覆盖放在 `docs-site/supplemental-ui/`，用来去掉侧边栏和默认顶栏菜单。
+顶栏左侧是「EN / 中文」，右侧是 BLOG、ABOUT、CONTACT。站点入口是英文概述页。BLOG 进入当前语言的正文，ABOUT 进入当前语言的 Apache License 2.0，CONTACT 是联系方式。同一页的另一种语言用顶栏左侧切换。界面覆盖放在 `docs-site/supplemental-ui/`，用来保留顶栏和左侧页面目录，并去掉默认顶栏菜单。
 
 == 目录
 
@@ -28,10 +28,10 @@
 |英文正文。
 
 |`docs-site/zh/modules/ROOT/nav.adoc`
-|中文页面顺序。站点不显示这组侧边栏。
+|中文侧边栏的页面顺序。
 
 |`docs-site/supplemental-ui/`
-|顶栏左侧为语言，右侧为 BLOG、ABOUT、CONTACT，并去掉侧边栏。
+|顶栏左侧为语言，右侧为 BLOG、ABOUT、CONTACT，并显示侧边栏。
 
 |`docs-site/package.json`
 |本地安装的 Antora 3.1 命令。
