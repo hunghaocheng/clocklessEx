@@ -17,6 +17,3 @@
 ** xref:tests.adoc[测试脚本]
 ** xref:simulate.adoc[仿真命令]
 ** xref:status.adoc[实现进度]
-
-* 附录
-** xref:build.adoc[生成本站]

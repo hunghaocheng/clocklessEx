@@ -17,6 +17,3 @@
 ** xref:tests.adoc[Test scripts]
 ** xref:simulate.adoc[Simulation commands]
 ** xref:status.adoc[Implementation status]
-
-* Appendix
-** xref:build.adoc[Build this site]
