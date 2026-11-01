@@ -41,14 +41,40 @@ footer.footer {
     display: none !important;
   }
 
+  .body {
+    display: grid !important;
+    grid-template-columns: minmax(15rem, 1fr) min(46rem, 100%) minmax(15rem, 1fr);
+    align-items: start;
+  }
+
+  .nav-container {
+    position: sticky;
+    top: 3.5rem;
+    justify-self: end;
+    width: 15rem;
+    height: calc(100vh - 3.5rem);
+    visibility: visible;
+  }
+
+  main.article {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .nav {
+    position: relative;
+    top: 0;
+    height: 100%;
+  }
+
   .content {
-    justify-content: center;
+    display: block;
   }
 
   .doc {
-    flex: 0 1 46rem;
-    margin-left: auto;
-    margin-right: auto;
+    width: auto;
+    max-width: none;
+    margin: 0 1.5rem;
   }
 
   aside.toc.embedded {
