@@ -1,14 +1,14 @@
 site:
   title: clocklessEx
   url: https://hunghaocheng.github.io/clocklessEx
-  start_page: zh@clocklessex::index.adoc
+  start_page: en@clocklessex::index.adoc
 content:
   sources:
   - url: ..
     branches: HEAD
     start_paths:
-    - docs-site/zh
     - docs-site/en
+    - docs-site/zh
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable

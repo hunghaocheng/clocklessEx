@@ -1,6 +1,7 @@
 name: clocklessex
 title: clocklessEx
 version: zh
+prerelease: true
 display_version: 中文
 nav:
 - modules/ROOT/nav.adoc

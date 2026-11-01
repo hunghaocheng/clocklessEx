@@ -4,7 +4,7 @@
 
 This site is a standalone Antora component in the repository. Its sources are under `docs-site/` and are not part of the Verilog compile. The result is static HTML. Open it in a browser.
 
-The left side of the top bar is 中文 / EN. The right side is BLOG, ABOUT, and CONTACT. BLOG opens the body of the current language. ABOUT opens the Apache License 2.0 page of the current language. CONTACT is the contact page. The other language of the same page is the switch on the left of the bar. UI overrides live in `docs-site/supplemental-ui/`. They remove the sidebar and the default top-bar menu.
+The left side of the top bar is EN / 中文. The right side is BLOG, ABOUT, and CONTACT. The site opens on the English home page. BLOG opens the body of the current language. ABOUT opens the Apache License 2.0 page of the current language. CONTACT is the contact page. The other language of the same page is the switch on the left of the bar. UI overrides live in `docs-site/supplemental-ui/`. They remove the sidebar and the default top-bar menu.
 
 == Directories
 
@@ -50,7 +50,7 @@ npm install
 npm run build
 ----
 
-Open `docs-site/build/site/index.html` in a browser. That file enters the Chinese home page, `docs-site/build/site/clocklessex/zh/index.html`. The English home page is `docs-site/build/site/clocklessex/en/index.html`.
+Open `docs-site/build/site/index.html` in a browser. That file enters the English home page, `docs-site/build/site/clocklessex/en/index.html`. The Chinese home page is `docs-site/build/site/clocklessex/zh/index.html`.
 
 `npm run build` runs `antora antora-playbook.yml --clean`. The first run downloads the default UI bundle. Later runs keep it in `docs-site/.cache/antora/`.
 
@@ -63,8 +63,8 @@ Antora collects pages from a Git repository. The content source in `antora-playb
 url: ..
 branches: HEAD
 start_paths:
-- docs-site/zh
 - docs-site/en
+- docs-site/zh
 ----
 
 `url` is relative to the playbook directory and points at the clocklessEx repository root. `branches: HEAD` uses the currently checked-out branch and reads files in the working tree, so a page can be rebuilt before it is committed. `start_paths` gathers Chinese and English as two versions of one component.

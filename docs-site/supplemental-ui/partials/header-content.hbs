@@ -3,7 +3,14 @@
     <div class="navbar-brand">
       <span class="navbar-lang">
         {{#each page.versions}}
+        {{#if (eq ./version 'en')}}
         <a class="navbar-item{{#if (eq ./version @root.page.version)}} is-current{{/if}}" href="{{{relativize ./url}}}">{{./displayVersion}}</a>
+        {{/if}}
+        {{/each}}
+        {{#each page.versions}}
+        {{#unless (eq ./version 'en')}}
+        <a class="navbar-item{{#if (eq ./version @root.page.version)}} is-current{{/if}}" href="{{{relativize ./url}}}">{{./displayVersion}}</a>
+        {{/unless}}
         {{/each}}
       </span>
       <span class="navbar-pages">
