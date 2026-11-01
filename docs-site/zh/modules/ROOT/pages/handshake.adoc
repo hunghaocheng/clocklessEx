@@ -1,0 +1,64 @@
+= 使能、请求与应答
+:description: st_latch 与 st_*_2ske_latch 的电平握手约定。
+:navtitle: 使能、请求与应答
+
+存储和神经元都建立在同一种电平锁存上：使能打开时数据进去，使能关掉后数据留下，再用一对请求和应答告诉下游。
+
+== 一位锁存
+
+`StandardCell/st_latch.v` 是门控 SR 锁存。数据先经过复位屏蔽，再拆成置位、复位两路，接到由与非门交叉耦合的那一对。
+
+[source,verilog]
+----
+wire data_eff = reset ? 1'b0 : data;
+wire en_eff = reset | en;
+
+nand t_nand1(s_node, data_eff, en_eff);
+not t_not1(inv_data, data_eff);
+nand t_nand2(r_node, inv_data, en_eff);
+nand t_nand3_q(Y, s_node, Yn);
+nand t_nand4_q_n(Yn, r_node, Y);
+----
+
+由此得到的时序约定是：
+
+* `en` 为高且 `reset` 为低：锁存透明，`Y` 跟随 `data`。
+* `en` 为低且 `reset` 为低：置位端和复位端都无效，`Y` 保持。
+* `reset` 为高：数据被当成 0，同时强制打开使能，`Y` 被置 0。
+
+`st_3_latch`、`st_8_latch`、`st_32_latch` 只是把同一只一位锁存按位排开，使能和复位共用。
+
+== 带请求的锁存
+
+`st_8_2ske_latch` 和 `st_32_2ske_latch` 在数据锁存旁边加了一只请求触发器。源码没有定义模块名里的 `2ske`。从端口看，它就是数据锁存加上 `req` / `ack`。`st_8_2ske_latch` 的注释写明了使用约定：上游先看 `req`，再决定要不要再次打开 `en`；`req` 为高表示数据已经进入锁存；`en` 再次为高会冲掉原来的数据。
+
+请求位本身也是与非型 SR，不是时钟采样：
+
+[source,verilog]
+----
+wire ack_eff = ack | reset;
+nand (s_inv, en, ~ack_eff);
+not (r_inv, ack_eff);
+nand (req, s_inv, req_n);
+nand (req_n, r_inv, req);
+----
+
+[cols="1,2",options="header"]
+|===
+|条件 |`req` 怎么变
+
+|`en` 为高，且 `ack`、`reset` 都为低
+|请求置位。
+
+|`ack` 或 `reset` 为高
+|请求清除。
+
+|`en` 与 `ack` 同时为高
+|置位条件和复位条件同时成立，这只 SR 的结果没有单独定义。下游应在收下数据之后再给 `ack`，不要和下一笔 `en` 叠在一起。
+|===
+
+32 位版本和 8 位版本的请求逻辑相同，数据宽度不同。`st_mula_bram` 和 `st_processing_unit` 使用 32 位版本。
+
+== 这一约定在存储里怎么用
+
+`st_flash_to_bram` 把 `memo_valid` 当成写使能，把八个槽的 `req` 拼成“这一槽已经写上”的标志。地址步进发生在 `memo_valid` 为低的时候。也就是：高电平写入当前地址，低电平才允许地址加一。这样读进槽里的是步进之前的地址。详见 xref:storage.adoc[存储通路]。

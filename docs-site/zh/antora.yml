@@ -1,0 +1,10 @@
+name: clocklessex
+title: clocklessEx
+version: zh
+display_version: 中文
+nav:
+- modules/ROOT/nav.adoc
+asciidoc:
+  attributes:
+    lang: zh-CN
+    page-repo-url: https://github.com/hunghaocheng/clocklessEx

@@ -1,0 +1,74 @@
+= Build this site
+:description: Directories, playbook, and commands for the standalone Antora site.
+:navtitle: Build this site
+
+This site is a standalone Antora component in the repository. Its sources are under `docs-site/` and are not part of the Verilog compile. The result is static HTML. Open it in a browser.
+
+The left side of the top bar is 中文 / EN. The right side is BLOG, ABOUT, and CONTACT. BLOG opens the body of the current language. ABOUT opens the Apache License 2.0 page of the current language. CONTACT is the contact page. The other language of the same page is the switch on the left of the bar. UI overrides live in `docs-site/supplemental-ui/`. They remove the sidebar and the default top-bar menu.
+
+== Directories
+
+[cols="1,2",options="header"]
+|===
+|Path |Role
+
+|`docs-site/antora-playbook.yml`
+|Site title, content sources, UI, and output directory.
+
+|`docs-site/zh/antora.yml`
+|Chinese component version. Component name `clocklessex`, version `zh`.
+
+|`docs-site/en/antora.yml`
+|English component version. The same component name, version `en`.
+
+|`docs-site/zh/modules/ROOT/pages/`
+|Chinese pages.
+
+|`docs-site/en/modules/ROOT/pages/`
+|English pages.
+
+|`docs-site/zh/modules/ROOT/nav.adoc`
+|Chinese page order. The site does not show this as a sidebar.
+
+|`docs-site/supplemental-ui/`
+|Language on the left of the top bar, BLOG, ABOUT, and CONTACT on the right, and no sidebar.
+
+|`docs-site/package.json`
+|The locally installed Antora 3.1 command.
+
+|`docs-site/build/site/`
+|Generated result. This directory is not committed.
+|===
+
+== Commands
+
+Node.js 18 or newer is required. From `docs-site/`:
+
+[source,text]
+----
+npm install
+npm run build
+----
+
+Open `docs-site/build/site/index.html` in a browser. That file enters the Chinese home page, `docs-site/build/site/clocklessex/zh/index.html`. The English home page is `docs-site/build/site/clocklessex/en/index.html`.
+
+`npm run build` runs `antora antora-playbook.yml --clean`. The first run downloads the default UI bundle. Later runs keep it in `docs-site/.cache/antora/`.
+
+== Why the playbook points at the repository root
+
+Antora collects pages from a Git repository. The content source in `antora-playbook.yml` is:
+
+[source,yaml]
+----
+url: ..
+branches: HEAD
+start_paths:
+- docs-site/zh
+- docs-site/en
+----
+
+`url` is relative to the playbook directory and points at the clocklessEx repository root. `branches: HEAD` uses the currently checked-out branch and reads files in the working tree, so a page can be rebuilt before it is committed. `start_paths` gathers Chinese and English as two versions of one component.
+
+The repository root must contain `.git`. Copying only the `docs-site/` directory, without the repository metadata, does not give Antora a content source.
+
+The UI is the `bundle-stable` artifact of the Antora default UI. Its address is `ui.bundle.url` in the playbook. Generation needs access to that address, or a hit in the local cache.

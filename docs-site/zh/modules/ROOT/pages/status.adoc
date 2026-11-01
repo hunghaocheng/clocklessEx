@@ -1,0 +1,117 @@
+= 实现进度
+:description: 与当前 Verilog 源码对齐的模块清单，区分已接上、占位和缺失。
+:navtitle: 实现进度
+
+下表对应仓库里现在的文件。测试台能编译，只说明端口接得上，不表示空模块已经有行为。三条根目录脚本和它们仿真层次的对应关系在 xref:tests.adoc[测试脚本]。
+
+== 已有电路
+
+[cols="2,3,2",options="header"]
+|===
+|模块 |行为 |文件
+
+|`st_latch` 及 3/8/32 位展开
+|门控 SR 锁存，复位时置 0
+|`StandardCell/st_latch.v` 等
+
+|`st_8_2ske_latch`、`st_32_2ske_latch`
+|数据锁存加 `req`/`ack`
+|`StandardCell/`
+
+|`st_c_element`
+|两输入 Muller C 元件
+|`StandardCell/st_c_element.v`
+
+|`st_mutex`
+|组合互斥，两路都为 1 时输出在 B
+|`StandardCell/st_mutex.v`
+
+|半加器到 16 位加法器、`st_3bit_adder`
+|组合加法
+|`StandardCell/`
+
+|`st_ring_osc`
+|三反相器仿真环振，可关断
+|`StandardCell/st_ring_osc.v`
+
+|`st_local_clk_hs`
+|两相局部控制器，用地址比较结束每一相
+|`STORAGE/st_local_clk_hs.v`
+
+|`st_3bit_8_stepper`、`st_8bit_256_stepper`
+|地址加一的两相步进
+|`STORAGE/`
+
+|`st_mula_bram`
+|八槽 32 位握手存储，低 3 位选槽
+|`STORAGE/st_mula_bram.v`
+
+|`st_flash_to_bram`
+|高电平写入，低电平步进，满则停
+|`STORAGE/st_flash_to_bram.v`
+
+|`st_memo_register`
+|类型 `8'b00000010` 进入上面的写入通路
+|`STORAGE/st_memo_register.v`
+
+|`st_synapse`、`st_neuron_txn`
+|权重门控的突触，两路符合后发 `req`
+|`StandardCell/`
+
+|`st_token_generator`
+|`valid` 门控的 32 位令牌
+|`StandardCell/st_token_generator.v`
+
+|`async_to_sync_fifo_ctrl`
+|异步写请求同步进 `clk_cache`
+|`FIFO/FIFO_cache.v`
+
+|`st_processing_unit` 的八路锁存
+|八路再锁存，请求相与得到 `req_out`
+|`EventRegister/st_processing_unit.v`
+|===
+
+== 端口在、行为还没有
+
+[cols="2,3",options="header"]
+|===
+|模块 |现状
+
+|`st_cross_a`
+|端口列出了数据、使能、状态、公式和三路 8 位结果。模块体为空。处理单元已经例化它，三路结果没有驱动。
+
+|`st_node`
+|端口是 8 位 `signal_in`、`en`、`signal_out`。模块体为空。
+
+|`st_relation`
+|没有端口，模块体为空。
+
+|`st_1_to_4_router`
+|四个输出都等于输入，`rst` 未使用。
+
+|`st_2_encoder`
+|注释为 WIP。透明锁存把 `req` 变成一对互补 grant。
+
+|`do_BRAMToflash`
+|类型 `8'b00000100` 已译码，没有写回模块。
+
+|`st_flash_to_bram` 的 `valid`
+|已计算 `memo_valid & req`，没有负载。
+
+|`tb_storage`
+|只打开 `tb_core.vcd` 然后结束，没有存储激励。`test_storage_run.bat` 跑的就是这个测试台。
+|===
+
+== 清单写了、树里没有
+
+`filelist.f` 还列出这些路径，工作区里没有对应文件：
+
+* `StandardCell/st_delay_line.v`
+* `StandardCell/st_reset.v`
+* `StandardCell/st_glitch_free_mux.v`
+* `StandardCell/st_fifo.v`
+* 根目录的 `press.v`
+
+根目录有 `tb_press.v`。没有 `press.v` 时，这个测试台不能按文件清单单独编译。
+
+`GUI/` 下是若干 `.out` 仿真日志，不是时钟无关电路的界面。`CORE/` 下没有 Verilog 源文件。

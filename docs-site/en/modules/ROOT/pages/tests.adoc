@@ -1,0 +1,99 @@
+= Test scripts
+:description: The modules simulated by test_storage_run.bat, test_ring_run.bat, and test_processing_run.bat.
+:navtitle: Test scripts
+
+This page records which group of modules each of the three simulation scripts at the repository root represents. A script is separated from the design modules it actually instantiates. A file that is only added on the compile command line, and is not instantiated by the testbench, is not counted as a module that script represents.
+
+The file names in the repository are `test_storage_run.bat`, `test_ring_run.bat`, and `test_processing_run.bat`. There is no `test_storage.bat` and no `test_processing_unit.bat`.
+
+[cols="2,2,3,2",options="header"]
+|===
+|Script |Top |Design modules it represents |Current simulation
+
+|`test_storage_run.bat`
+|`tb_storage`
+|The name points at the storage path. The testbench does not instantiate `st_memo_register`, `st_flash_to_bram`, or `st_mula_bram`
+|Opens a waveform and finishes immediately
+
+|`test_ring_run.bat`
+|`tb_test_ring`
+|`st_ring_osc` drives `st_flash_to_bram`
+|Has stimulus and writes `tb_ring.vcd`
+
+|`test_processing_run.bat`
+|`tb_processing`
+|Connects `st_processing_unit` above the ring and `st_flash_to_bram`
+|Has stimulus and writes `tb_processing.vcd`
+|===
+
+All three scripts first change to the repository root, and they open GTKWave after simulation.
+
+== test_storage_run.bat
+
+This script is the entry of the storage test. The top module is `tb_storage` in `STORAGE/tb_storage.v`.
+
+[source,text]
+----
+iverilog -o COREPROCESS/tb_core.out -s tb_storage -c filelist.f
+vvp -n COREPROCESS/tb_core.out
+gtkwave tb_core.vcd
+----
+
+`tb_storage` does only two things: it writes the waveform to `tb_core.vcd`, then it calls `$finish`. It has no input stimulus and instantiates no design module. It therefore does not currently represent a storage path that is operating. `filelist.f` hands every source in the list to the compiler, including xref:status.adoc[five paths that are not in the tree]. Until those paths are filled in, this script fails at compile time.
+
+Read by the script name, the area it is prepared to cover is `STORAGE/`: `st_memo_register`, `st_flash_to_bram`, and `st_mula_bram`. This script represents the storage path itself only after the testbench instantiates those three modules.
+
+== test_ring_run.bat
+
+This script represents a local beat entering the storage path. The top is `tb_test_ring` in `StandardCell/tb_test_ring.v`. It does not use `filelist.f`. It compiles named files, so the missing paths in the list do not affect it.
+
+The testbench reads 32-bit words from `STORAGE/flash_memo.hex`. The address is `memo_addr` from `st_flash_to_bram`. `clk_out` of `st_ring_osc` is connected to `memo_valid`. Here the ring is not a global clock. It is the valid pulse of this one storage path. The waveform file is `tb_ring.vcd`.
+
+The design modules that actually exist in the simulation hierarchy are:
+
+[source,text]
+----
+tb_test_ring
+  st_ring_osc
+  st_flash_to_bram
+    st_8bit_256_stepper
+      st_8bit_adder
+        st_4bit_adder ×2
+      st_8_latch ×2
+        st_latch ×8
+      st_local_clk_hs
+        st_latch ×3
+    st_mula_bram
+      st_32_2ske_latch ×8
+        st_32_latch
+          st_latch ×32
+----
+
+While `memo_valid` is high, one of the eight slots is written according to the low 3 bits of the address. While it is low, `st_8bit_256_stepper` adds one to the address. The full and acknowledge convention is in xref:storage.adoc[Storage path].
+
+The compile command also names `st_3bit_8_stepper`, `st_3_latch`, `st_3bit_adder`, `st_full_adder`, and `st_half_adder`. The matching 3-bit stepper instantiation in the testbench is commented out. Those modules are not in the simulation hierarchy, so this script does not represent the 3-bit stepper.
+
+== test_processing_run.bat
+
+This script represents event registration. The top is `tb_processing` in `EventRegister/tb_processing.v`. It adds one `st_processing_unit` above the ring and the storage path.
+
+[source,text]
+----
+tb_processing
+  st_ring_osc
+  st_flash_to_bram
+    (the interior matches test_ring_run.bat)
+  st_processing_unit
+    st_32_2ske_latch ×8
+    st_cross_a
+----
+
+`datas_out` of `st_flash_to_bram` is `datas_in` of the processing unit, and the eight `reqs_out` bits are `ens`. The processing unit latches the eight 32-bit words again. The AND of the eight `req` signals is `unit_req`. `st_cross_a` is instantiated, and its body is still empty, so it does not compute convergence, pending, or divergence. See xref:processing.adoc[Processing unit].
+
+`st_8_2ske_latch` is on the compile list and is not instantiated in this hierarchy. Both the processing unit and the multi-slot memory use `st_32_2ske_latch`.
+
+The storage-side `ack` is driven by the testbench. The eight `ack` inputs inside the processing unit are tied to 0 and are not affected by that testbench signal. The waveform file is `tb_processing.vcd`.
+
+== Boundary with the other scripts
+
+`run_neuron.bat` represents `st_neuron_txn` and `st_synapse`, not these three storage links. `STORAGE/run_local_clk_hs.bat` represents `st_local_clk_hs` alone. Its addresses are driven directly by the testbench and do not pass through `st_flash_to_bram`. The remaining compile commands are in xref:simulate.adoc[Simulation commands].

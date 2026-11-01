@@ -1,0 +1,63 @@
+= Simulation commands
+:description: Commands and scripts that run the current testbenches with Icarus Verilog.
+:navtitle: Simulation commands
+
+The simulator is Icarus Verilog. Commands run from the repository root. Waveform files are written in the current directory of the command. Every script changes to the repository root first.
+
+Which modules `test_storage_run.bat`, `test_ring_run.bat`, and `test_processing_run.bat` instantiate is recorded in xref:tests.adoc[Test scripts]. This page keeps the commands and the other testbenches.
+
+== File list
+
+`filelist.f` tries to list every source file. It contains xref:status.adoc[five paths that are not in the tree], so the following command fails until those files exist:
+
+[source,text]
+----
+iverilog -o <out> -s <top_module> -c filelist.f
+vvp <out>
+----
+
+`test_storage_run.bat`, `run_neuron.bat`, and `STORAGE/run_local_clk_hs.bat` use this list. `test_ring_run.bat` and `test_processing_run.bat` compile files one by one and avoid the missing files.
+
+== Neuron
+
+[source,text]
+----
+iverilog -o StandardCell/tb_st_neuron_txn.out -s tb_st_neuron_txn -c filelist.f
+vvp -n StandardCell/tb_st_neuron_txn.out
+----
+
+`vvp` prints the three `$display` lines in the testbench: after both synapses, after `ack`, and after the weight of path B is 0, each with `req` and `spike_data`. The waveform is `tb_st_neuron_txn.vcd` at the repository root.
+
+If the full file list cannot be used because of missing files, name the files the neuron actually depends on: `st_neuron_txn.v`, `st_synapse.v`, `st_c_element.v`, `st_latch.v`, `st_8_latch.v`, and `tb_st_neuron_txn.v`.
+
+== Local controller
+
+`STORAGE/run_local_clk_hs.bat` and `STORAGE/run_local_clk_hs.ps1` both call `iverilog -c filelist.f` from the repository root. The top is `tb_local_clk_hs`. They therefore hit the missing paths in the file list, as the neuron script does.
+
+The testbench itself drives `step_req` and the three addresses. It does not connect a real stepper. It shows how the controller reacts to address comparison, not the closed loop of incrementing an address. The waveform file is `tb_clk.vcd`. To avoid the missing files, the compile list only needs `STORAGE/tb_local_clk_hs.v`, `STORAGE/st_local_clk_hs.v`, and `StandardCell/st_latch.v`.
+
+== Adders, latches, and the FIFO
+
+Each of these testbenches writes its own VCD and uses the stimulus in its own file:
+
+[cols="2,2",options="header"]
+|===
+|Testbench |Waveform
+
+|`StandardCell/tb_st_latch.v`
+|`tb_st_latch.vcd`
+
+|`StandardCell/tb_st_half_adder.v`
+|`tb_st_half_adder.vcd`
+
+|`StandardCell/tb_st_full_adder.v`
+|`tb_st_full_adder.vcd`
+
+|`StandardCell/tb_st_16bit_adder.v`
+|`tb_st_16bit_adder.vcd`
+
+|`FIFO/tb_FIFO_cache.v`
+|`tb_FIFO_cache.vcd`
+|===
+
+Pass the module name from the table to `-s`, and give `iverilog` that testbench together with the sources it instantiates. The time unit is the timescale directive at the top of each file. The ring, storage, and processing-unit testbenches are 1ps/1ps. The neuron testbench is 1ns/1ns.

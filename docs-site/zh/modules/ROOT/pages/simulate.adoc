@@ -1,0 +1,63 @@
+= 仿真命令
+:description: 用 Icarus Verilog 跑当前测试台的命令和脚本。
+:navtitle: 仿真命令
+
+仿真器是 Icarus Verilog。命令在仓库根目录执行。波形文件写在运行命令时的当前目录，脚本都先切到仓库根目录。
+
+`test_storage_run.bat`、`test_ring_run.bat`、`test_processing_run.bat` 各自例化哪些模块，记在 xref:tests.adoc[测试脚本]。本页只保留命令和其余测试台。
+
+== 文件清单
+
+`filelist.f` 试图一次列出全部源文件。它包含 xref:status.adoc[树里还不存在的五个路径]，所以下面这条命令在那些文件补上之前会失败：
+
+[source,text]
+----
+iverilog -o <out> -s <top_module> -c filelist.f
+vvp <out>
+----
+
+`test_storage_run.bat`、`run_neuron.bat` 和 `STORAGE/run_local_clk_hs.bat` 使用这份清单。`test_ring_run.bat` 与 `test_processing_run.bat` 改为逐个文件编译，避开缺失文件。
+
+== 神经元
+
+[source,text]
+----
+iverilog -o StandardCell/tb_st_neuron_txn.out -s tb_st_neuron_txn -c filelist.f
+vvp -n StandardCell/tb_st_neuron_txn.out
+----
+
+`vvp` 会打印测试台里三段 `$display`：两路突触之后、`ack` 之后、以及 B 路权重为 0 之后的 `req` 和 `spike_data`。波形是仓库根目录的 `tb_st_neuron_txn.vcd`。
+
+若整份文件清单因缺失文件不能用，编译时改为点名神经元实际依赖的文件：`st_neuron_txn.v`、`st_synapse.v`、`st_c_element.v`、`st_latch.v`、`st_8_latch.v` 和 `tb_st_neuron_txn.v`。
+
+== 局部控制器
+
+`STORAGE/run_local_clk_hs.bat` 与 `STORAGE/run_local_clk_hs.ps1` 都在仓库根目录调用 `iverilog -c filelist.f`，顶层是 `tb_local_clk_hs`。因此它们和神经元脚本一样，会先撞上文件清单里缺失的路径。
+
+测试台自己给出 `step_req` 和三组地址，不连接真实步进器。它看的是控制器对地址比较的反应，不是地址加一的闭环。波形文件名是 `tb_clk.vcd`。要绕开缺失文件时，编译列表只需 `STORAGE/tb_local_clk_hs.v`、`STORAGE/st_local_clk_hs.v` 和 `StandardCell/st_latch.v`。
+
+== 加法器、锁存和 FIFO
+
+这些测试台各自写独立的 VCD，并用自己文件里的激励：
+
+[cols="2,2",options="header"]
+|===
+|测试台 |波形
+
+|`StandardCell/tb_st_latch.v`
+|`tb_st_latch.vcd`
+
+|`StandardCell/tb_st_half_adder.v`
+|`tb_st_half_adder.vcd`
+
+|`StandardCell/tb_st_full_adder.v`
+|`tb_st_full_adder.vcd`
+
+|`StandardCell/tb_st_16bit_adder.v`
+|`tb_st_16bit_adder.vcd`
+
+|`FIFO/tb_FIFO_cache.v`
+|`tb_FIFO_cache.vcd`
+|===
+
+编译时用 `-s` 指定上表里的模块名，并把该测试台和它例化到的源文件一起交给 `iverilog`。时间单位以各文件开头的 timescale 指令为准。环振、存储和处理单元测试台是 1ps/1ps，神经元测试台是 1ns/1ns。

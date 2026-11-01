@@ -1,0 +1,117 @@
+= Implementation status
+:description: A module list aligned with the current Verilog sources, separating connected logic, placeholders, and missing files.
+:navtitle: Implementation status
+
+The tables match the files in the repository now. A testbench that compiles only shows that the ports connect. It does not mean an empty module has behavior. The three root scripts and the simulation hierarchies they correspond to are in xref:tests.adoc[Test scripts].
+
+== Circuits that exist
+
+[cols="2,3,2",options="header"]
+|===
+|Module |Behavior |File
+
+|`st_latch` and the 3/8/32-bit expansions
+|Gated SR latch, driven to 0 on reset
+|`StandardCell/st_latch.v` and others
+
+|`st_8_2ske_latch`, `st_32_2ske_latch`
+|Data latch plus `req` / `ack`
+|`StandardCell/`
+
+|`st_c_element`
+|Two-input Muller C-element
+|`StandardCell/st_c_element.v`
+
+|`st_mutex`
+|Combinational mutex. When both inputs are 1, the output is on B
+|`StandardCell/st_mutex.v`
+
+|Half adder through the 16-bit adder, and `st_3bit_adder`
+|Combinational addition
+|`StandardCell/`
+
+|`st_ring_osc`
+|Three-inverter simulation ring that can be stopped
+|`StandardCell/st_ring_osc.v`
+
+|`st_local_clk_hs`
+|Two-phase local controller. Each phase ends on an address comparison
+|`STORAGE/st_local_clk_hs.v`
+
+|`st_3bit_8_stepper`, `st_8bit_256_stepper`
+|Two-phase step that adds one to an address
+|`STORAGE/`
+
+|`st_mula_bram`
+|Eight-slot 32-bit handshake memory. The low 3 bits select the slot
+|`STORAGE/st_mula_bram.v`
+
+|`st_flash_to_bram`
+|Write on a high level, step on a low level, stop when full
+|`STORAGE/st_flash_to_bram.v`
+
+|`st_memo_register`
+|Type `8'b00000010` enters the write path above
+|`STORAGE/st_memo_register.v`
+
+|`st_synapse`, `st_neuron_txn`
+|Weight-gated synapses. `req` is issued after both paths coincide
+|`StandardCell/`
+
+|`st_token_generator`
+|32-bit token gated by `valid`
+|`StandardCell/st_token_generator.v`
+
+|`async_to_sync_fifo_ctrl`
+|Asynchronous write request synchronized into `clk_cache`
+|`FIFO/FIFO_cache.v`
+
+|Eight latches of `st_processing_unit`
+|Eight-way re-latch. `req_out` is the AND of the requests
+|`EventRegister/st_processing_unit.v`
+|===
+
+== Ports exist, behavior does not
+
+[cols="2,3",options="header"]
+|===
+|Module |Current state
+
+|`st_cross_a`
+|The ports list data, enable, state, formula, and three 8-bit results. The body is empty. The processing unit already instantiates it, and the three results are undriven.
+
+|`st_node`
+|The ports are 8-bit `signal_in`, `en`, and `signal_out`. The body is empty.
+
+|`st_relation`
+|No ports. The body is empty.
+
+|`st_1_to_4_router`
+|All four outputs equal the input. `rst` is unused.
+
+|`st_2_encoder`
+|The comment says WIP. A transparent latch turns `req` into a complementary grant pair.
+
+|`do_BRAMToflash`
+|Type `8'b00000100` is decoded. There is no write-back module.
+
+|`valid` in `st_flash_to_bram`
+|`memo_valid & req` is computed and has no load.
+
+|`tb_storage`
+|It only opens `tb_core.vcd` and finishes. There is no storage stimulus. `test_storage_run.bat` runs this testbench.
+|===
+
+== Named in the list, absent from the tree
+
+`filelist.f` also lists these paths. The working tree has no matching files:
+
+* `StandardCell/st_delay_line.v`
+* `StandardCell/st_reset.v`
+* `StandardCell/st_glitch_free_mux.v`
+* `StandardCell/st_fifo.v`
+* `press.v` at the repository root
+
+`tb_press.v` is at the repository root. Without `press.v`, that testbench cannot be compiled from the file list alone.
+
+`GUI/` contains a few `.out` simulation logs. It is not a user interface for the clockless circuits. `CORE/` contains no Verilog sources.

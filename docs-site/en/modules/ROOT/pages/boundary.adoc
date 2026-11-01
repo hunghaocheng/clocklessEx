@@ -1,0 +1,57 @@
+= Synchronous boundary
+:description: How an asynchronous write request is sampled into a clocked FIFO.
+:navtitle: Synchronous boundary
+
+The main paths have no global clock. When a value has to be handed to a clock domain, the sources introduce `clk_cache` only in `async_to_sync_fifo_ctrl` in `FIFO/FIFO_cache.v`.
+
+== Parameters
+
+[cols="1,1",options="header"]
+|===
+|Parameter |Default
+
+|`DATA_WIDTH`
+|8
+
+|`FIFO_DEPTH`
+|16
+
+|`ADDR_WIDTH`
+|4
+|===
+
+Depth and address width have to be kept consistent by the caller: the extra address bit distinguishes full from empty. The default depth of 16 with a 4-bit address follows that convention.
+
+== How a write request enters the clock domain
+
+The asynchronous side has only `async_wr_req` and `async_din`. On the rising edge of `clk_cache` the module does two things.
+
+The request passes through a three-stage shift:
+
+[source,verilog]
+----
+wr_req_sync <= {wr_req_sync[1:0], async_wr_req};
+----
+
+Data is captured into `din_reg` while `async_wr_req` is high. That assignment uses `clk_cache`, not an edge of the asynchronous request itself.
+
+Write enable is the rising edge of the synchronized request, and only while the FIFO is not full:
+
+[source,verilog]
+----
+assign wr_en = (wr_req_sync[1] && !wr_req_sync[2]) && !full;
+----
+
+`wr_req_sync[2]` is the older sample of the request, and `wr_req_sync[1]` is the newer sample. A new value of 1 and an old value of 0 is the synchronized edge after the asynchronous request rises. One rise writes one entry. If the request stays high, it is not written on every cycle.
+
+== Read and write pointers
+
+Both pointers update on `clk_cache`. On a write, `din_reg` enters `fifo_ram[wr_ptr]` and the write pointer increases by one. When `rd_en` is high and the FIFO is not empty, the read pointer increases by one. `dout` is the cell currently selected by the read pointer. The read itself does not add another output register.
+
+Empty means the two pointers are equal. Full means the high bits differ and the low bits match. Reset is active low and clears both pointers. The initial RAM values are in an `initial` loop. That is simulation initialization, not a reset circuit.
+
+== It does not replace the handshake latches
+
+This FIFO does not produce `req` / `ack`, and it does not recognize `memo_valid`. The latches, steppers, and neuron on the main path do not instantiate it. Its place is this: the asynchronous side hands in 8 bits with one write pulse, and the synchronous side takes them with `clk_cache` and `rd_en`.
+
+`FIFO/tb_FIFO_cache.v` produces `tb_FIFO_cache.vcd`.

@@ -1,0 +1,74 @@
+= 生成本站
+:description: 独立 Antora 站点的目录、playbook 和生成命令。
+:navtitle: 生成本站
+
+本站是仓库里的一个独立 Antora 组件，源文件都在 `docs-site/`，不参与 Verilog 编译。生成之后是一组静态 HTML，浏览器直接打开即可。
+
+顶栏左侧是「中文 / EN」，右侧是 BLOG、ABOUT、CONTACT。BLOG 进入当前语言的正文，ABOUT 进入当前语言的 Apache License 2.0，CONTACT 是联系方式。同一页的另一种语言用顶栏左侧切换。界面覆盖放在 `docs-site/supplemental-ui/`，用来去掉侧边栏和默认顶栏菜单。
+
+== 目录
+
+[cols="1,2",options="header"]
+|===
+|路径 |作用
+
+|`docs-site/antora-playbook.yml`
+|站点标题、内容来源、UI 和输出目录。
+
+|`docs-site/zh/antora.yml`
+|中文组件。组件名 `clocklessex`，版本名 `zh`。
+
+|`docs-site/en/antora.yml`
+|英文组件。同一组件名，版本名 `en`。
+
+|`docs-site/zh/modules/ROOT/pages/`
+|中文正文。
+
+|`docs-site/en/modules/ROOT/pages/`
+|英文正文。
+
+|`docs-site/zh/modules/ROOT/nav.adoc`
+|中文页面顺序。站点不显示这组侧边栏。
+
+|`docs-site/supplemental-ui/`
+|顶栏左侧为语言，右侧为 BLOG、ABOUT、CONTACT，并去掉侧边栏。
+
+|`docs-site/package.json`
+|本地安装的 Antora 3.1 命令。
+
+|`docs-site/build/site/`
+|生成结果。这个目录不提交。
+|===
+
+== 命令
+
+需要 Node.js 18 或更新版本。在 `docs-site/` 下执行：
+
+[source,text]
+----
+npm install
+npm run build
+----
+
+用浏览器打开 `docs-site/build/site/index.html`。这个文件会进入中文概述页 `docs-site/build/site/clocklessex/zh/index.html`。英文概述页是 `docs-site/build/site/clocklessex/en/index.html`。
+
+`npm run build` 会执行 `antora antora-playbook.yml --clean`。第一次运行要下载默认 UI 包，之后 UI 包留在 `docs-site/.cache/antora/`。
+
+== Playbook 为什么指向仓库根
+
+Antora 从 Git 仓库收集页面。`antora-playbook.yml` 里的内容源是：
+
+[source,yaml]
+----
+url: ..
+branches: HEAD
+start_paths:
+- docs-site/zh
+- docs-site/en
+----
+
+`url` 相对 playbook 所在目录，指向 clocklessEx 仓库根。`branches: HEAD` 表示使用当前检出的分支，并读取工作区里的文件，因此页面改完不必先提交就能重新生成。`start_paths` 把中文和英文收成同一组件的两个版本。
+
+仓库根目录需要有 `.git`。只拷贝 `docs-site/` 目录、不带仓库元数据时，Antora 无法收集内容。
+
+UI 使用 Antora 默认界面的 `bundle-stable` 构建产物，地址写在 playbook 的 `ui.bundle.url`。生成过程要能访问该地址，或者命中本地缓存。

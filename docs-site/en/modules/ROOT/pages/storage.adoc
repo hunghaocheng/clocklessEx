@@ -1,0 +1,66 @@
+= Storage path
+:description: The current connection from memo-type decode, through the multi-slot latches, to the address step.
+:navtitle: Storage path
+
+The storage path places one 32-bit word, a type, and a valid level into eight handshake slots, and it reports the address used at that time. The path has no clock port.
+
+== Type decode
+
+`STORAGE/st_memo_register.v` inspects `memo_type`:
+
+[source,verilog]
+----
+wire do_flashToBRAM = valid_memo && (memo_type == 8'b00000010);
+wire do_BRAMToflash = valid_memo && (memo_type == 8'b00000100);
+----
+
+Only `8'b00000010` is connected to `memo_valid` of `st_flash_to_bram`. `8'b00000100` is decoded, but the module has no matching write-back instance, so that wire has no load.
+
+`st_memo_register` exports `memo_addr` and `reqs_out`. The multi-slot data `datas_out` stays inside `st_flash_to_bram` and is not available on the ports of this level.
+
+== How write and step are separated
+
+`st_flash_to_bram` instantiates the stepper and the multi-slot memory together:
+
+[source,verilog]
+----
+wire req = reqs_out[0] | reqs_out[1] | reqs_out[2] | reqs_out[3]
+         | reqs_out[4] | reqs_out[5] | reqs_out[6] | reqs_out[7];
+wire valid = memo_valid & req;
+wire all_full = reqs_out[0] & reqs_out[1] & reqs_out[2] & reqs_out[3]
+              & reqs_out[4] & reqs_out[5] & reqs_out[6] & reqs_out[7];
+
+st_8bit_256_stepper u_hs(reset, ~memo_valid & ~all_full, memo_addr);
+st_mula_bram mula(
+    memo_data, memo_valid & ~all_full, memo_addr,
+    ack, datas_out, reqs_out, reset);
+----
+
+[cols="1,2",options="header"]
+|===
+|Level |What happens
+
+|`memo_valid` is high, and a slot is still free
+|The slot selected by the low 3 bits of the current `memo_addr` is written. The step request is low, so the address holds.
+
+|`memo_valid` is low, and a slot is still free
+|Write enable is off. The stepper receives a request and the address increases by one.
+
+|All eight `req` signals are high
+|`all_full` is high. Both write enable and the step request are turned off.
+
+|`ack` is high
+|The requests of all eight slots are cleared together. `all_full` then falls, and the address may advance again.
+|===
+
+`valid` is computed in the module and is not connected onward. Fullness uses the eight-way AND `all_full`, not this `valid` wire.
+
+If `memo_valid` is already low when reset is released, the step condition `~memo_valid & ~all_full` is true immediately. The testbenches therefore assert reset first and release it afterward, so the address during reset is not tangled with the first beat after release. Both `tb_test_ring` and `tb_processing` use that order.
+
+== Eight slots
+
+`st_mula_bram` selects one of eight `st_32_2ske_latch` instances with `memo_addr[2:0]`. Only the latch whose low 3 bits match the address sees enable. The 32-bit word is written as it is. On read, slot 0 is in the low bits of the 256-bit `datas_out`. The eight `req` signals are packed into `reqs_out` with slot 0 in the low bits.
+
+The address bus is 8 bits, but slot select uses only the low 3 bits. When the address goes from 8 to 15, the low 3 bits are 0 through 7 again, and a slot that was already written is opened again. Raising `en` again overwrites the old data in that slot, under the xref:handshake.adoc[latch convention]. `all_full` can block the next write only while all eight requests are still set. Once `ack` clears the requests, the same low 3 bits can be written again.
+
+All eight latches share one `ack`. Acknowledge is not given per slot.

@@ -1,0 +1,50 @@
+.nav-container,
+.toolbar,
+aside.toc.sidebar,
+footer.footer {
+  display: none !important;
+}
+
+.navbar-burger {
+  display: none !important;
+}
+
+.navbar-brand {
+  align-items: center;
+  padding-left: 0.25rem;
+  width: 100%;
+}
+
+.navbar-lang,
+.navbar-pages {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-pages {
+  margin-left: auto;
+}
+
+.navbar-brand .navbar-item,
+.navbar-brand .navbar-item:first-child {
+  align-self: center;
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 3.5rem;
+  padding: 0 1rem;
+}
+
+.navbar-brand .navbar-item.is-current {
+  box-shadow: inset 0 -2px 0 #fff;
+}
+
+@media screen and (min-width: 1024px) {
+  .doc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  aside.toc.embedded {
+    display: block !important;
+  }
+}

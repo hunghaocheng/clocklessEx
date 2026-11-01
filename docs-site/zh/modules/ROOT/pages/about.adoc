@@ -1,0 +1,8 @@
+= ABOUT
+:description: 本项目遵循 Apache License 2.0。
+:page-menuitem: about
+:toc: ~
+
+本项目遵循 Apache License 2.0 开源协议。
+
+协议文本见 http://www.apache.org/licenses/LICENSE-2.0[Apache License, Version 2.0]。

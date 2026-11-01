@@ -1,0 +1,64 @@
+= Enable, request, and acknowledge
+:description: The level handshake used by st_latch and st_*_2ske_latch.
+:navtitle: Enable, request, and acknowledge
+
+Storage and the neuron are built on the same level-sensitive latch: data enters while enable is open, remains after enable closes, and a request/acknowledge pair tells the downstream stage.
+
+== One-bit latch
+
+`StandardCell/st_latch.v` is a gated SR latch. Data is masked by reset, split into set and reset, and connected to a cross-coupled NAND pair.
+
+[source,verilog]
+----
+wire data_eff = reset ? 1'b0 : data;
+wire en_eff = reset | en;
+
+nand t_nand1(s_node, data_eff, en_eff);
+not t_not1(inv_data, data_eff);
+nand t_nand2(r_node, inv_data, en_eff);
+nand t_nand3_q(Y, s_node, Yn);
+nand t_nand4_q_n(Yn, r_node, Y);
+----
+
+The resulting timing convention is:
+
+* `en` high and `reset` low: the latch is transparent, and `Y` follows `data`.
+* `en` low and `reset` low: both set and reset are inactive, and `Y` holds.
+* `reset` high: data is treated as 0 and enable is forced open, so `Y` is driven to 0.
+
+`st_3_latch`, `st_8_latch`, and `st_32_latch` place the same one-bit latch side by side. Enable and reset are shared.
+
+== Latch with a request
+
+`st_8_2ske_latch` and `st_32_2ske_latch` add a request latch beside the data latch. The sources never define the `2ske` in the module name. From the ports, it is a data latch plus `req` / `ack`. The comment in `st_8_2ske_latch` states the convention: the upstream stage looks at `req` before opening `en` again; `req` high means the data has entered the latch; raising `en` again overwrites the previous data.
+
+The request bit is itself a NAND SR latch, not a clocked sample:
+
+[source,verilog]
+----
+wire ack_eff = ack | reset;
+nand (s_inv, en, ~ack_eff);
+not (r_inv, ack_eff);
+nand (req, s_inv, req_n);
+nand (req_n, r_inv, req);
+----
+
+[cols="1,2",options="header"]
+|===
+|Condition |What happens to `req`
+
+|`en` is high, and both `ack` and `reset` are low
+|The request is set.
+
+|`ack` or `reset` is high
+|The request is cleared.
+
+|`en` and `ack` are high together
+|Set and reset are both active, and the result of this SR latch is not defined on its own. The downstream stage should give `ack` after accepting the data, and should not overlap it with the next `en`.
+|===
+
+The 32-bit and 8-bit versions use the same request logic at different data widths. `st_mula_bram` and `st_processing_unit` use the 32-bit version.
+
+== How storage uses the convention
+
+`st_flash_to_bram` treats `memo_valid` as the write enable, and uses the `req` of each of the eight slots as the flag that the slot has been written. The address steps while `memo_valid` is low. A high level writes the current address; a low level is what allows the address to increase by one. The value stored in the slot is therefore the address from before the step. See xref:storage.adoc[Storage path].

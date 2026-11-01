@@ -1,0 +1,119 @@
+= A clockless, transaction-driven graph architecture on a gate-level netlist
+:description: clocklessEx uses transactions as the unit of operation, and nodes and relations to organize computation without a global clock.
+:navtitle: Library
+
+This project proposes an event-driven clockless computing architecture. A transaction is the unit of operation. Nodes and relations form the computing model. The system runs by event triggering, state decisions, and relation propagation, not by one global clock that schedules everything together.
+
+A later transaction comes from an external input, a node state, and the relations attached to that node. State changes, relation matching, and event propagation are implemented directly as a gate-level netlist.
+
+The aim is a computing system based on events, causal relations, and dynamic propagation. Hardware decides its own direction from the current state, and it can branch, join, keep propagating, or stop.
+
+The software is licensed under the Apache License 2.0. The name clocklessEx is a trademark. The license does not grant trademark rights.
+
+== From instructions to transactions
+
+A conventional processor takes the instruction as the unit of execution. A program counter and instruction decode line the work up into a sequence.
+
+This project takes the transaction as the unit of operation. A transaction is triggered by an external event, a change of node state, or propagation along another relation. The current state then decides whether a following transaction is produced. Computation is no longer only the replay of a fixed instruction sequence. The next direction is decided by the trigger, the state change, and the relation conditions.
+
+On the circuit, the arrival and completion of a transaction are the xref:handshake.adoc[enable, request, and acknowledge] levels, not a sample on a clock edge. The comment in the processing-unit source treats different surface forms of one intent as the problem to be faced. See xref:processing.adoc[Processing unit].
+
+== The graph as the computing model
+
+=== Nodes and relations
+
+The basic model is a graph of nodes and edges. A node holds data, identity, and runtime state. An edge describes dependence, association, and the direction of propagation between nodes.
+
+A node is a fixed-width binary structure. Identity can be fixed by a storage address or a mapping table. Higher-level meaning is mapped by an offline tool. The sources reserve `st_node` and `st_relation`. Both module bodies are empty.
+
+=== State decisions and relation propagation
+
+After an external event triggers a node, the system matches relations against the current state and decides whether a valid successor exists. A successful match produces a new transaction. Several valid relations become a branch or an arbitration. No valid relation ends this propagation.
+
+The next direction is therefore decided jointly by node state and relation conditions, rather than by a path that was fully scheduled in advance. That decision is intended for `st_cross_a`. Its ports are already declared, and its body is still empty.
+
+=== Propagation and convergence
+
+A transaction keeps triggering later transactions from relations that already exist and from state changes. An external processor does not have to issue an execution command for each step.
+
+Propagation is controlled by continuing, branching, joining, stopping silently, and emitting an external output. The current transaction chain ends when no valid successor remains, or when a designated output anchor is reached.
+
+The graph then does more than store data and describe relations. It organizes the computation on the hardware. The circuit in which two events may arrive at different times and fire only after both have arrived is the xref:neuron.adoc[transaction neuron].
+
+== How this meets the current circuits
+
+The sections above are the computing system the project is building. The volumes below follow the sources that are already written. An empty module is not described as a finished function.
+
+What is connected is the gate-level netlist, the local handshake, the storage path, and the transaction neuron. When data is accepted, and when an address advances, is decided by a local enable and acknowledge. Repeated levels that still appear are either a two-phase controller private to one path, or a ring oscillator used only in simulation. They are not a clock shared by the whole chip. The FIFO that has `clk_cache` sits only on the synchronous boundary. Nodes, relations, and the cross module do not yet compute propagation on the graph. See xref:status.adoc[Implementation status].
+
+The pages stay in volumes: conventions, modules, and validation are separate, and each volume lists its parts.
+
+== Volume I. Conventions
+
+[cols="2,1,3",options="header"]
+|===
+|Part |Status |Contents
+
+|xref:principles.adoc[No global clock]
+|Current sources
+|Where a local phase ends and a synchronous clock begins.
+
+|xref:handshake.adoc[Enable, request, and acknowledge]
+|Current sources
+|Gated latches, plus `req` / `ack`. Completion of a transaction on the circuit.
+|===
+
+== Volume II. Modules
+
+[cols="2,1,3",options="header"]
+|===
+|Part |Status |Contents
+
+|xref:standard-cells.adoc[Gate-level cells]
+|Implemented
+|C-element, mutex, and adders. The gate-level netlist of state change.
+
+|xref:local-time.adoc[Local phases and steppers]
+|Implemented
+|Ring oscillator, two-phase controller, and the 3-bit and 8-bit steppers.
+
+|xref:storage.adoc[Storage path]
+|Implemented
+|`st_memo_register`, `st_flash_to_bram`, and `st_mula_bram`. Where node data is held.
+
+|xref:neuron.adoc[Transaction neuron]
+|Implemented
+|`st_synapse` and `st_neuron_txn`. Firing after both events have arrived.
+
+|xref:token.adoc[Tokens]
+|Partly a placeholder
+|Token packing is implemented. The one-to-four router and the encoder are still placeholders.
+
+|xref:processing.adoc[Processing unit]
+|Partly a placeholder
+|The eight-way re-latch is connected. The body of `st_cross_a`, intended for relation matching, is empty.
+
+|xref:boundary.adoc[Synchronous boundary]
+|Implemented
+|`async_to_sync_fifo_ctrl`. The only boundary into a clock domain.
+|===
+
+== Volume III. Validation
+
+The modules represented by the three scripts at the repository root are recorded in xref:tests.adoc[Test scripts].
+
+[cols="2,3",options="header"]
+|===
+|Script |Design modules it represents
+
+|`test_storage_run.bat`
+|Storage-test entry `tb_storage`. It does not currently instantiate a storage module.
+
+|`test_ring_run.bat`
+|`st_ring_osc` driving `st_flash_to_bram`.
+
+|`test_processing_run.bat`
+|That storage path, then `st_processing_unit`.
+|===
+
+There is no script named `test_storage.bat` or `test_processing_unit.bat`. Compile commands, waveform file names, and the other testbenches are in xref:simulate.adoc[Simulation commands].

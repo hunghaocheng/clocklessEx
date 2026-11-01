@@ -1,0 +1,63 @@
+= 事务神经元
+:description: 突触事件、粘滞记忆、C 元件胞体，以及 req/ack 发放。
+:navtitle: 事务神经元
+
+`StandardCell/st_neuron_txn.v` 开头的注释把生物名词映射到了具体电路。这里按电路说明，映射只作为阅读注释时的对照。
+
+[cols="1,2",options="header"]
+|===
+|注释里的说法 |电路
+
+|突触事务 `en_*`
+|`st_synapse` 的 `en`。为高表示这一路事件到达。
+
+|权重 `weight`
+|和 `en` 相与。为 0 时这一路不会留下数据，也不会置位记忆。
+
+|粘滞发放锁存
+|与非型 SR。`fire` 置位，`ack` 清除。
+
+|C 元件
+|`st_c_element`。两路记忆都为 1 才把 `coincide` 置 1。
+
+|发放 `req` / `ack`
+|另一只 SR。`coincide` 且尚未应答时把 `req` 置位，`ack` 把它清除。
+|===
+
+== 突触
+
+`st_synapse` 没有记忆。`fire = en & weight`，8 位数据的每一位再和 `fire` 相与。权重为 0 或使能为低时，数据和 `fire` 都是 0。
+
+== 两路可以不同时到达
+
+每一路 `fire` 把本路的 SR 置位。置位之后，即使 `en` 已经回到低，记忆仍然留着，直到共同的 `ack`。C 元件要两路记忆都为 1 才输出 1。所以两路事件不必在同一时刻为高，只要各自来过、且应答还没来，胞体就会在较晚的那一路到达时符合。
+
+数据路径是分开的：`fire_*` 同时作为 `st_8_latch` 的使能，把当时的突触输出锁住。两路锁存按位或，得到 `merge`。`coincide` 再作为第三只 8 位锁存的使能，把 `merge` 收成 `spike_data`。
+
+这三只 `st_8_latch` 的 `reset` 在例化时没有连接。
+
+== 发放和清除
+
+[source,verilog]
+----
+nand (s_inv, coincide, ~ack);
+not (r_inv, ack);
+nand t_q1(req, s_inv, req_n);
+nand t_q2(req_n, r_inv, req);
+----
+
+`ack` 同时清除两路粘滞记忆和 `req`。`ack` 为高时若某一路 `fire` 仍为高，记忆 SR 的置位和复位同时有效。测试台的做法是先把 `en_a`、`en_b` 降下来，再给一段 `ack`。
+
+== 测试台在检查什么
+
+`StandardCell/tb_st_neuron_txn.v` 用字符码做数据：`z` 为 `8'h7A`，`h` 为 `8'h68`，`y` 为 `8'h79`，`k` 为 `8'h6B`。同一组对照写在仓库根目录的 `key_zh_data.txt` 里，一行节点一对字符。
+
+测试台分三段：
+
+. 权重都为 1。先只拉高 A，再只拉高 B。注释期望两路都到之后 `req` 才起来。
+. 拉高 `ack` 再放开，用来清除发放。
+. 把 B 的权重改成 0，再各发一次 A 和 B。注释期望不能因为 B 的事件再产生一次符合，因为符合需要两路记忆。
+
+脚本 `run_neuron.bat` 会编译这个测试台并打开 `tb_st_neuron_txn.vcd`。波形里的 `req` 和 `spike_data` 以仿真打印为准；文档不另报一组结果。
+
+`COREPROCESS/neuron_cluster_testdata.v` 和 `physical_model_testdata.v` 是单独的激励数据模块。`st_node` 与 `st_relation` 还没有把这些事件收成节点和边。

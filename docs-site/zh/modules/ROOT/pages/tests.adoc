@@ -1,0 +1,99 @@
+= 测试脚本
+:description: test_storage_run.bat、test_ring_run.bat、test_processing_run.bat 各自仿真的模块。
+:navtitle: 测试脚本
+
+本页记录仓库根目录上三个仿真脚本分别代表哪一组模块。脚本和它真正例化的设计模块分开写。命令行里多编译进去、但测试台没有例化的文件，不记成这个脚本代表的模块。
+
+仓库里的文件名是 `test_storage_run.bat`、`test_ring_run.bat`、`test_processing_run.bat`。没有 `test_storage.bat`，也没有 `test_processing_unit.bat`。
+
+[cols="2,2,3,2",options="header"]
+|===
+|脚本 |顶层 |代表的设计模块 |当前仿真
+
+|`test_storage_run.bat`
+|`tb_storage`
+|名称指向存储通路。测试台没有例化 `st_memo_register`、`st_flash_to_bram` 或 `st_mula_bram`
+|打开波形后立即结束
+
+|`test_ring_run.bat`
+|`tb_test_ring`
+|`st_ring_osc` 驱动 `st_flash_to_bram`
+|有激励，写 `tb_ring.vcd`
+
+|`test_processing_run.bat`
+|`tb_processing`
+|在环振和 `st_flash_to_bram` 之上接 `st_processing_unit`
+|有激励，写 `tb_processing.vcd`
+|===
+
+三个脚本都先切到仓库根目录，仿真结束后打开 GTKWave。
+
+== test_storage_run.bat
+
+这个脚本对应存储测试的入口，顶层模块是 `STORAGE/tb_storage.v` 里的 `tb_storage`。
+
+[source,text]
+----
+iverilog -o COREPROCESS/tb_core.out -s tb_storage -c filelist.f
+vvp -n COREPROCESS/tb_core.out
+gtkwave tb_core.vcd
+----
+
+`tb_storage` 只做两件事：把波形写到 `tb_core.vcd`，然后 `$finish`。它没有输入激励，也没有例化任何设计模块。因此它目前不代表一条正在工作的存储通路。`filelist.f` 会把清单里的源文件全部交给编译器，其中包括 xref:status.adoc[树里还不存在的五个路径]，清单补齐之前这条脚本会在编译阶段失败。
+
+若按脚本名字理解它准备覆盖的范围，对象是 `STORAGE/`：`st_memo_register`、`st_flash_to_bram`、`st_mula_bram`。这三只模块要等测试台把它们例化之后，这个脚本才代表存储通路本身。
+
+== test_ring_run.bat
+
+这个脚本代表局部节拍进入存储通路。顶层是 `StandardCell/tb_test_ring.v` 里的 `tb_test_ring`。它不使用 `filelist.f`，而是逐个文件编译，因此不受清单里缺失文件的影响。
+
+测试台从 `STORAGE/flash_memo.hex` 读出 32 位数据，地址用 `st_flash_to_bram` 给出的 `memo_addr`。`st_ring_osc` 的 `clk_out` 接到 `memo_valid`。环振在这里不是全局时钟，只是这一条存储通路的有效脉冲。波形文件是 `tb_ring.vcd`。
+
+仿真层次里实际存在的设计模块是：
+
+[source,text]
+----
+tb_test_ring
+  st_ring_osc
+  st_flash_to_bram
+    st_8bit_256_stepper
+      st_8bit_adder
+        st_4bit_adder ×2
+      st_8_latch ×2
+        st_latch ×8
+      st_local_clk_hs
+        st_latch ×3
+    st_mula_bram
+      st_32_2ske_latch ×8
+        st_32_latch
+          st_latch ×32
+----
+
+`memo_valid` 为高时按地址低 3 位写入八个槽中的一个，为低时 `st_8bit_256_stepper` 把地址加一。槽满和应答的约定见 xref:storage.adoc[存储通路]。
+
+编译命令里还有 `st_3bit_8_stepper`、`st_3_latch`、`st_3bit_adder`、`st_full_adder`、`st_half_adder`。测试台里对应的 3 位步进器例化已被注释掉，这些模块不在仿真层次中，所以这个脚本不代表 3 位步进器。
+
+== test_processing_run.bat
+
+这个脚本代表事件登记。顶层是 `EventRegister/tb_processing.v` 里的 `tb_processing`。它在环振和存储通路之上多接一只 `st_processing_unit`。
+
+[source,text]
+----
+tb_processing
+  st_ring_osc
+  st_flash_to_bram
+    （内部层次与 test_ring_run.bat 相同）
+  st_processing_unit
+    st_32_2ske_latch ×8
+    st_cross_a
+----
+
+`st_flash_to_bram` 的 `datas_out` 送进处理单元的 `datas_in`，八路 `reqs_out` 送进 `ens`。处理单元把八路 32 位再锁存一次，八个 `req` 相与得到 `unit_req`。`st_cross_a` 已经被例化，模块体仍是空的，没有计算收敛、悬挂或发散。详见 xref:processing.adoc[处理单元]。
+
+编译列表里的 `st_8_2ske_latch` 没有被这一层次例化。处理单元和多槽存储用的都是 `st_32_2ske_latch`。
+
+存储侧的 `ack` 由测试台拉动。处理单元内部的八路 `ack` 接常数 0，不受这个测试台信号影响。波形文件是 `tb_processing.vcd`。
+
+== 和另外几条脚本的边界
+
+`run_neuron.bat` 代表 `st_neuron_txn` 与 `st_synapse`，不是这三条存储链路。`STORAGE/run_local_clk_hs.bat` 代表单独的 `st_local_clk_hs`，地址由测试台直接给定，不经过 `st_flash_to_bram`。其余编译命令见 xref:simulate.adoc[仿真]。

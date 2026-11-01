@@ -1,0 +1,20 @@
+= CONTACT
+:description: 郑鸿豪的 GitHub、GitLab 与邮箱。
+:page-menuitem: contact
+:toc: ~
+
+郑鸿豪（Hung Hao Cheng），又名 Mcrris。
+
+[cols="1,2",options="header"]
+|===
+| |地址
+
+|GitHub
+|https://github.com/hunghaocheng/clocklessEx
+
+|GitLab
+|https://gitlab.com/zhhao615/clocklessex
+
+|邮箱
+|hunghaocheng@outlook.com
+|===

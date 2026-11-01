@@ -1,0 +1,63 @@
+= Transaction neuron
+:description: Synaptic events, sticky memory, the C-element soma, and req/ack firing.
+:navtitle: Transaction neuron
+
+The comment at the top of `StandardCell/st_neuron_txn.v` maps biological names onto concrete circuits. This page describes the circuit. The mapping is only a key for reading that comment.
+
+[cols="1,2",options="header"]
+|===
+|Wording in the comment |Circuit
+
+|Synaptic transaction `en_*`
+|`en` of `st_synapse`. High means this path's event has arrived.
+
+|Weight `weight`
+|AND-ed with `en`. When it is 0, this path leaves no data and does not set its memory.
+
+|Sticky fire latch
+|NAND SR latch. `fire` sets it, and `ack` clears it.
+
+|C-element
+|`st_c_element`. `coincide` becomes 1 only when both memories are 1.
+
+|Firing `req` / `ack`
+|A second SR latch. `req` is set when `coincide` is true and acknowledge has not arrived. `ack` clears it.
+|===
+
+== Synapse
+
+`st_synapse` has no memory. `fire = en & weight`, and each bit of the 8-bit data is AND-ed with `fire`. When the weight is 0 or enable is low, both the data and `fire` are 0.
+
+== The two paths need not arrive together
+
+Each `fire` sets the SR latch of its own path. After it is set, the memory remains even if `en` has returned low, until the shared `ack`. The C-element outputs 1 only when both memories are 1. The two events therefore do not have to be high at the same moment. If each has arrived and acknowledge has not, the soma coincides when the later path arrives.
+
+The data paths are separate. `fire_*` is also the enable of an `st_8_latch`, which holds the synaptic output from that moment. The two latches are OR-ed bit by bit into `merge`. `coincide` is then the enable of a third 8-bit latch, which captures `merge` as `spike_data`.
+
+The `reset` port of these three `st_8_latch` instances is left unconnected.
+
+== Fire and clear
+
+[source,verilog]
+----
+nand (s_inv, coincide, ~ack);
+not (r_inv, ack);
+nand t_q1(req, s_inv, req_n);
+nand t_q2(req_n, r_inv, req);
+----
+
+`ack` clears both sticky memories and `req`. If some `fire` is still high while `ack` is high, set and reset of that memory SR latch are both active. The testbench drops `en_a` and `en_b` first, then applies `ack` for an interval.
+
+== What the testbench checks
+
+`StandardCell/tb_st_neuron_txn.v` uses character codes as data: `z` is `8'h7A`, `h` is `8'h68`, `y` is `8'h79`, and `k` is `8'h6B`. The same pairing is written in `key_zh_data.txt` at the repository root, one node and one pair of characters per line.
+
+The testbench has three parts:
+
+. Both weights are 1. A is raised alone, then B is raised alone. The comment expects `req` to rise only after both paths have arrived.
+. `ack` is raised and released, to clear the firing.
+. The weight of B is changed to 0, then A and B each fire once. The comment expects B's event not to produce another coincidence, because coincidence needs both memories.
+
+`run_neuron.bat` compiles this testbench and opens `tb_st_neuron_txn.vcd`. `req` and `spike_data` in the waveform follow the simulation printout. This page does not report a separate set of results.
+
+`COREPROCESS/neuron_cluster_testdata.v` and `physical_model_testdata.v` are separate stimulus modules. `st_node` and `st_relation` do not yet gather these events into nodes and edges.

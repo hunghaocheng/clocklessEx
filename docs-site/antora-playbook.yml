@@ -1,0 +1,31 @@
+site:
+  title: clocklessEx
+  url: https://hunghaocheng.github.io/clocklessEx
+  start_page: zh@clocklessex::index.adoc
+content:
+  sources:
+  - url: ..
+    branches: HEAD
+    start_paths:
+    - docs-site/zh
+    - docs-site/en
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+asciidoc:
+  attributes:
+    source-language: verilog
+    sectanchors: ''
+    toc: ''
+    toclevels: 2
+    page-pagination: ''
+    repo-url: https://github.com/hunghaocheng/clocklessEx
+runtime:
+  cache_dir: .cache/antora
+  log:
+    format: pretty
+output:
+  dir: build/site
+  clean: true

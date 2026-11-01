@@ -1,0 +1,40 @@
+= Tokens
+:description: Fields of the 32-bit token, valid gating, and the unfinished distribution and encoder.
+:navtitle: Tokens
+
+A token attaches a source and a type to one 8-bit word, and `valid` decides whether the whole word is visible. The generator has no clock. Distribution and encoding are still placeholders.
+
+== Fields
+
+`st_token_generator` packs four 8-bit inputs into 32 bits. Every bit is AND-ed with `valid`:
+
+[cols="1,1,2",options="header"]
+|===
+|Bits |Port |Meaning given by the port name
+
+|[7:0]
+|`data_in`
+|Data
+
+|[15:8]
+|`type_in`
+|Type
+
+|[23:16]
+|`source_id`
+|Source identifier
+
+|[31:24]
+|`flags`
+|Flags
+|===
+
+When `valid` is low, the 32-bit output is all zeros. When it is high, the output is the four inputs concatenated in the order above. This "type" is not connected in the sources to `memo_type` in `st_memo_register`. The storage types `8'b00000010` and `8'b00000100` appear only on the storage path.
+
+== One to four
+
+`st_1_to_4_router` has one 32-bit input and four 32-bit outputs. All four outputs are continuous assignments of the same `token_in`. `rst` is unused. The same token is copied four times. The router does not yet select one path by destination.
+
+== Encoder
+
+The comment on `st_2_encoder` marks it WIP. It feeds `req` into a latch whose enable is tied to 1. `grant_fst` is the latch output, and `grant_sec` is its complement. With enable tied high, the latch is transparent, so once `req` is stable the two grants are `req` and `~req`. It is not yet connected to a second request and acknowledge as an arbiter.

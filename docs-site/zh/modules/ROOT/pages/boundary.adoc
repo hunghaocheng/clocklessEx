@@ -1,0 +1,57 @@
+= 同步边界
+:description: 异步写请求如何被采样进带时钟的 FIFO。
+:navtitle: 同步边界
+
+主通路没有全局时钟。需要交给时钟域时，源码只在 `FIFO/FIFO_cache.v` 的 `async_to_sync_fifo_ctrl` 里引入 `clk_cache`。
+
+== 参数
+
+[cols="1,1",options="header"]
+|===
+|参数 |默认
+
+|`DATA_WIDTH`
+|8
+
+|`FIFO_DEPTH`
+|16
+
+|`ADDR_WIDTH`
+|4
+|===
+
+深度和地址宽度需要调用者自己保持一致：地址多出来的那一位用来区分满和空。默认的 16 深、4 位地址符合这个惯例。
+
+== 写请求怎么进时钟域
+
+异步侧只有 `async_wr_req` 和 `async_din`。模块在 `clk_cache` 的上升沿做两件事。
+
+请求经过三级移位：
+
+[source,verilog]
+----
+wr_req_sync <= {wr_req_sync[1:0], async_wr_req};
+----
+
+数据在 `async_wr_req` 为高时被采进 `din_reg`。这个赋值用的是 `clk_cache`，不是异步请求自己的沿。
+
+写使能取同步后请求的上升沿，并且 FIFO 未满：
+
+[source,verilog]
+----
+assign wr_en = (wr_req_sync[1] && !wr_req_sync[2]) && !full;
+----
+
+`wr_req_sync[2]` 是更早一拍的请求，`wr_req_sync[1]` 是较新的一拍。新值为 1、旧值为 0，对应异步请求从低到高之后的那个同步沿。一次拉高只写入一个条目。请求若一直为高，不会每拍都写。
+
+== 读写指针
+
+写指针和读指针都在 `clk_cache` 上更新。写入时，`din_reg` 进入 `fifo_ram[wr_ptr]`，写指针加一。`rd_en` 为高且非空时，读指针加一。`dout` 是读指针当前指向的单元，读动作本身不另做输出寄存。
+
+空是两个指针相等。满是高位不同、低位相同。复位低有效，把两个指针清零。RAM 的初值放在 `initial` 循环里，这是仿真初始化，不是复位电路。
+
+== 它不替代握手锁存
+
+这只 FIFO 不产生 `req` / `ack`，也不识别 `memo_valid`。主通路上的锁存、步进和神经元不会例化它。它的位置就是：异步侧用一个写脉冲把 8 位数据交进来，同步侧用 `clk_cache` 和 `rd_en` 把它取走。
+
+`FIFO/tb_FIFO_cache.v` 会生成 `tb_FIFO_cache.vcd`。

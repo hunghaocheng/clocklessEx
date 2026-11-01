@@ -1,0 +1,76 @@
+= 门级标准单元
+:description: StandardCell 目录里已实现的组合门、C 元件、互斥器和加法器。
+:navtitle: 门级标准单元
+
+`StandardCell/` 放的是不带全局时钟的小单元。锁存见 xref:handshake.adoc[使能、请求与应答]，环振见 xref:local-time.adoc[局部节拍与步进]，突触和神经元见 xref:neuron.adoc[事务神经元]。
+
+== C 元件
+
+`st_c_element` 是 Muller C 元件的门级写法。输出只有在两路输入变成同一个值时才跟着变，否则靠输出自己的反馈保持。
+
+[source,verilog]
+----
+nand g1(n1, a, y);
+nand g2(n2, b, y);
+nand g3(n3, a, b);
+nand g4(y, n1, n2, n3);
+----
+
+神经元用它做胞体：两路突触的粘滞记忆都为 1 时 `coincide` 才变为 1，只要有一路还没到就保持原来的输出。它没有复位端口，上电初值由仿真器对反馈环的初始值决定。
+
+== 互斥器
+
+`st_mutex` 是组合逻辑，不是带亚稳态滤除的模拟互斥器。源码注释写 “A get the priority”，门的结果是另一回事：
+
+[source,verilog]
+----
+not t_not1(not_B, B);
+and t_and1(last_A, A, not_B);
+not t_not2(not_last_A, last_A);
+and t_and2(last_B, B, not_last_A);
+----
+
+[cols="1,1,1,1",options="header"]
+|===
+|A |B |out_A |out_B
+
+|0 |0 |0 |0
+|1 |0 |1 |0
+|0 |1 |0 |1
+|1 |1 |0 |1
+|===
+
+两路同时为 1 时，B 得到输出，A 被关掉。模块目前没有被存储通路或神经元例化。
+
+== 加法器
+
+加法器全部是组合进位链，没有时钟，也没有握手。
+
+[cols="1,2",options="header"]
+|===
+|模块 |构成
+
+|`st_half_adder`
+|异或得到和，与门得到进位。
+
+|`st_full_adder`
+|按全加器展开的异或与进位，不例化半加器。
+
+|`st_3bit_adder`
+|三只全加器。3 位步进器用它做 `+1`。
+
+|`st_4bit_adder`
+|组内超前进位，并给出组生成 `Gg` 和组传播 `Pg`。
+
+|`st_8bit_adder`
+|两只 4 位加法器，进位在组间串行传递。8 位步进器用它做 `+1`。
+
+|`st_16bit_adder`
+|四只 4 位加法器，组间用 `Gg`/`Pg` 做超前进位。
+|===
+
+步进器只取“当前地址加一”的组合结果，真正把新地址留住的是后面的锁存，不是加法器。
+
+== 文件清单里还没有的单元
+
+`filelist.f` 写了 `st_delay_line.v`、`st_reset.v`、`st_glitch_free_mux.v` 和 `st_fifo.v`，当前树里没有这四个文件。用整份 `filelist.f` 编译时，Icarus Verilog 会因为找不到它们而失败。已经能单独跑通的脚本没有引用这四项，见 xref:simulate.adoc[仿真]。

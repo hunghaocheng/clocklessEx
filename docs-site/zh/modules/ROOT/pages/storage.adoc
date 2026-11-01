@@ -1,0 +1,66 @@
+= 存储通路
+:description: 从 memo 类型译码、多槽锁存到地址步进的当前接法。
+:navtitle: 存储通路
+
+存储通路把一笔 32 位数据和一个类型、一个有效电平，放进八个握手槽，并给出当时使用的地址。通路上没有时钟端口。
+
+== 类型译码
+
+`STORAGE/st_memo_register.v` 看 `memo_type`：
+
+[source,verilog]
+----
+wire do_flashToBRAM = valid_memo && (memo_type == 8'b00000010);
+wire do_BRAMToflash = valid_memo && (memo_type == 8'b00000100);
+----
+
+只有 `8'b00000010` 被接到 `st_flash_to_bram` 的 `memo_valid`。`8'b00000100` 已经译出，模块里没有对应的写回实例，这根线没有负载。
+
+`st_memo_register` 向外给出 `memo_addr` 和 `reqs_out`。多槽数据 `datas_out` 留在 `st_flash_to_bram` 内部，这一层端口上拿不到。
+
+== 写入和步进怎样错开
+
+`st_flash_to_bram` 同时例化步进器和多槽存储：
+
+[source,verilog]
+----
+wire req = reqs_out[0] | reqs_out[1] | reqs_out[2] | reqs_out[3]
+         | reqs_out[4] | reqs_out[5] | reqs_out[6] | reqs_out[7];
+wire valid = memo_valid & req;
+wire all_full = reqs_out[0] & reqs_out[1] & reqs_out[2] & reqs_out[3]
+              & reqs_out[4] & reqs_out[5] & reqs_out[6] & reqs_out[7];
+
+st_8bit_256_stepper u_hs(reset, ~memo_valid & ~all_full, memo_addr);
+st_mula_bram mula(
+    memo_data, memo_valid & ~all_full, memo_addr,
+    ack, datas_out, reqs_out, reset);
+----
+
+[cols="1,2",options="header"]
+|===
+|电平 |发生的事
+
+|`memo_valid` 为高，且还有空槽
+|按当前 `memo_addr` 的低 3 位写入对应槽。步进请求为低，地址保持。
+
+|`memo_valid` 为低，且还有空槽
+|写使能关掉，步进器收到请求，地址加一。
+
+|八个 `req` 都为高
+|`all_full` 为高，写使能和步进请求都被关掉。
+
+|`ack` 为高
+|八个槽的请求一起清除。之后 `all_full` 落下，地址又可以推进。
+|===
+
+`valid` 在模块里算出后没有往下接。槽满的判断用的是八路相与 `all_full`，不是这根 `valid`。
+
+复位结束后 `memo_valid` 若先是低电平，步进条件 `~memo_valid & ~all_full` 会马上成立。测试台因此先拉复位，再放开，避免复位期间的地址和释放瞬间的第一拍缠在一起。`tb_test_ring` 与 `tb_processing` 都是这个顺序。
+
+== 八个槽
+
+`st_mula_bram` 按 `memo_addr[2:0]` 选择八只 `st_32_2ske_latch` 中的一只。同一时刻只有地址低 3 位相等的那一只看到使能。32 位数据原样写入，读出按槽 0 在低位拼成 256 位 `datas_out`。八个 `req` 按槽 0 在低位拼成 `reqs_out`。
+
+地址总线是 8 位，槽选择只用了低 3 位。地址从 8 走到 15 时，低 3 位又是 0 到 7，会再次打开已经写过的槽。`en` 再次为高会按 xref:handshake.adoc[锁存约定] 冲掉该槽里的旧数据。`all_full` 只能在八个请求都还留着的时候挡住下一次写入；一旦 `ack` 把请求清掉，同样的低 3 位可以再次写入。
+
+八只锁存共用同一个 `ack`。应答不是按槽给的。

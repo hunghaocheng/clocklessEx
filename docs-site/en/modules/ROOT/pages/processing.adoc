@@ -1,0 +1,55 @@
+= Processing unit
+:description: The eight-way re-latch, the intent comment in the source, and the cross module that is not implemented yet.
+:navtitle: Processing unit
+
+`EventRegister/st_processing_unit.v` sits after the multi-slot memory. In `tb_processing` the ring drives `st_flash_to_bram`, the eight `reqs_out` bits are the processing unit's `ens`, and the 256-bit `datas_out` is `datas_in`.
+
+== Comment in the source
+
+The comment at the top of the module states a direction of work, not an algorithm that is already implemented:
+
+[quote]
+现今指令集到操作系统的操作本质上是把固定或者有限组合的结果复现出来，不是针对最终意图。就如 sorry、sry、抱歉、对不起，甚至一个表情，可以代表一个意图。
+
+The comment treats different surface forms of one intent as the problem the processing unit is meant to face. The current circuit does not compare those forms. `st_cross_a`, instantiated below the comment, has an empty body.
+
+== Eight-way re-latch
+
+The processing unit contains eight `st_32_2ske_latch` instances. Each takes 32 bits of `datas_in` and one bit of `ens`. The write enable is `ens[i] & ~reqs_out[i]`: once this path's request is set, its own enable is turned off, so the same word is not written into the slot again.
+
+The eight `ack` inputs are tied to constant 0. Under the xref:handshake.adoc[request latch] rule, a request that has been set is not cleared by acknowledge. `req_out` is the AND of the eight `req` signals, so it is high only when all eight paths have latched.
+
+`reset` still clears the data and the requests.
+
+== Cross module
+
+The ports of `st_cross_a` are already fixed:
+
+[cols="1,2",options="header"]
+|===
+|Port |Connection inside the processing unit
+
+|`data_in`
+|The 32-bit output of latch 0, not all eight paths together.
+
+|`en`
+|`req` of path 0.
+
+|`states_in`
+|Constant `32'h00004000`. The sources do not explain this bit.
+
+|`formula`
+|Constant `32'h00000000`.
+
+|`converge_out`, `pending_out`, `diverge_out`
+|8 bits each. The module body is empty, so they are undriven.
+
+|`reset`
+|Connected to the processing unit's reset.
+|===
+
+The empty module does not compute convergence, pending, or divergence. Data latched on paths 1 through 7 is not sent into `st_cross_a` either.
+
+== Difference from the storage test
+
+`tb_processing` and `tb_test_ring` read the same `STORAGE/flash_memo.hex`, and both addresses come from the stepper inside `st_flash_to_bram`. The processing-unit test adds one `st_processing_unit` and watches `unit_req` to see whether all eight paths have latched. Both testbenches raise the storage-side `ack` for one time unit and then release it, which clears the storage-slot requests. The `ack` inside the processing unit remains 0 and is not affected by that testbench signal.

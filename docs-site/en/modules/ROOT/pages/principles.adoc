@@ -1,0 +1,35 @@
+= No global clock
+:description: How clocklessEx replaces a global synchronous clock with local handshakes, and where a beat still appears in the sources.
+:navtitle: No global clock
+
+A synchronous circuit uses one clock to tell every register that the input of this cycle is valid and may be sampled. The main paths of clocklessEx do not provide that clock. Whether an operation has finished is told to the next stage, by the stage that produced it, as a level.
+
+== Completion instead of a clock edge
+
+Three signals recur in the sources:
+
+* *Enable* (`en`, `memo_valid`, `step_req`) means the upstream stage now allows this stage to act.
+* *Request* (`req`) means this stage has latched the data, so the next stage may take it.
+* *Acknowledge* (`ack`) means the next stage has taken it, so the request may be withdrawn.
+
+A latch is transparent while `en` is high and holds while `en` is low. It is not a flip-flop triggered by a rising edge. Stages on the same chain therefore do not have to occupy the same time slot: the event on synapse A may arrive first, the event on synapse B later, and the soma fires only after both memories are set. That is the timing the xref:neuron.adoc[transaction neuron] testbench is meant to show.
+
+== Local phases still exist
+
+"No global clock" does not mean the circuit has no phases. The two blocks below produce repeated high and low levels, but each one covers a single path:
+
+`st_local_clk_hs`::
+It has no clock port. Three latches remember "started", "phase one done", and "phase two done", and each phase ends when an address already equals its target. The `clk` in the module name means this local phase, not a synchronous clock. See xref:local-time.adoc[Local phases and steppers].
+
+`st_ring_osc`::
+Three inverters in a loop, for simulation only. Each stage has a delay of one time unit. The unit comes from the testbench timescale; the related testbenches use 1ps/1ps. When enable is off, the output is low, so a downstream stage does not treat an idle level as a beat.
+
+The processing-unit testbench connects the ring output to `memo_valid` of `st_flash_to_bram`. In that experiment the ring is "a train of valid pulses from outside". It is still not a clock tree shared by the whole design.
+
+== Where a clock actually appears
+
+`async_to_sync_fifo_ctrl` in `FIFO/FIFO_cache.v` has `clk_cache`. A shift register synchronizes an asynchronous write request into the clock domain, and the data is then written into RAM. This is the boundary into the synchronous world. It is not used to time the latches, the steppers, or the neuron. See xref:boundary.adoc[Synchronous boundary].
+
+== What cannot be claimed yet
+
+The sources are a simulatable gate-level and wiring description, not a layout that has closed timing. The mutex is combinational logic and has no metastability filter. The ring period is a simulation delay, not an oscillation frequency on silicon. The empty `st_node`, `st_relation`, and `st_cross_a` do not yet compute a graph or an intent.

@@ -1,0 +1,16 @@
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-lang">
+        {{#each page.versions}}
+        <a class="navbar-item{{#if (eq ./version @root.page.version)}} is-current{{/if}}" href="{{{relativize ./url}}}">{{./displayVersion}}</a>
+        {{/each}}
+      </span>
+      <span class="navbar-pages">
+        <a class="navbar-item{{#unless (or (eq page.attributes.menuitem 'about') (eq page.attributes.menuitem 'contact'))}} is-current{{/unless}}" href="{{{siteRootPath}}}/clocklessex/{{page.version}}/index.html">BLOG</a>
+        <a class="navbar-item{{#if (eq page.attributes.menuitem 'about')}} is-current{{/if}}" href="{{{siteRootPath}}}/clocklessex/{{page.version}}/about.html">ABOUT</a>
+        <a class="navbar-item{{#if (eq page.attributes.menuitem 'contact')}} is-current{{/if}}" href="{{{siteRootPath}}}/clocklessex/{{page.version}}/contact.html">CONTACT</a>
+      </span>
+    </div>
+  </nav>
+</header>

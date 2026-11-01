@@ -1,0 +1,13 @@
+{
+  "name": "clocklessex-docs",
+  "private": true,
+  "description": "clocklessEx 的独立 Antora 文档站",
+  "scripts": {
+    "build": "antora antora-playbook.yml --clean",
+    "build:fresh": "antora antora-playbook.yml --clean --fetch"
+  },
+  "devDependencies": {
+    "@antora/cli": "3.1.10",
+    "@antora/site-generator": "3.1.10"
+  }
+}

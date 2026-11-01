@@ -1,0 +1,71 @@
+= Local phases and steppers
+:description: How the ring oscillator, the two-phase local controller, and the 3-bit and 8-bit steppers increment an address without a global clock.
+:navtitle: Local phases and steppers
+
+An address is not incremented on a clock edge. A stepper computes the next address in combinational logic, then copies it from one latch to the next with two enable phases. A phase advances when the latched result already equals its target.
+
+== Simulation ring
+
+While `enable` is high and `reset` is low, `StandardCell/st_ring_osc.v` connects three inverters into a loop. Each assignment has a simulation delay of one time unit. The output is AND-ed with enable, so `clk_out` is low when the ring is not enabled.
+
+[source,verilog]
+----
+wire en_n = enable & ~reset;
+assign #1 n1 = en_n ? ~n3 : 1'b1;
+assign #1 n2 = en_n ? ~n1 : 1'b1;
+assign #1 n3 = en_n ? ~n2 : 1'b1;
+assign clk_out = en_n & n3;
+----
+
+Internal nodes are preset to 1 while the ring is stopped. This is only a simulation model: after three delay stages are closed into a loop, one full period is 6 time units, and it changes with the timescale. It is not a process parameter.
+
+`tb_test_ring` and `tb_processing` connect `clk_out` to `memo_valid`. Each toggle of the ring is one "valid" or "invalid" seen by the storage path.
+
+== Two-phase controller
+
+The ports of `STORAGE/st_local_clk_hs.v` are `reset`, `step_req`, three addresses, and `en_a`, `en_b`, `busy`. Three `st_latch` instances hold the state. Comparisons are wire equality. There is no clock.
+
+One step has these phases:
+
+. When `step_req` rises while the controller is idle, the arm latch is set and `busy` goes high.
+. Phase one holds `en_a` high until `addr_a == addr_next`. The first latch has caught the new value computed by combinational logic.
+. Phase two holds `en_b` high until `addr_b == addr_a`. The second latch has copied the first.
+. When `step_req` returns low and phase two is already done, the three state latches are cleared and `busy` returns low.
+
+`reset` uses the same clear path. The controller's own latches tie their `reset` port to constant 0. Clearing is done with the data input and enable, not with the reset pin of `st_latch`.
+
+The controller does not check pulse width. If `step_req` falls before phase two finishes, the clear waits until this step completes. If it rises again while `busy` is high, the start condition requires `~armed`, so a second step is not stacked on top.
+
+== Steppers
+
+The two steppers have the same structure at different widths.
+
+[cols="1,1,2",options="header"]
+|===
+|Module |Address |Addition
+
+|`st_3bit_8_stepper`
+|3 bits, modulo 8
+|`st_3bit_adder` adds `3'b001`
+
+|`st_8bit_256_stepper`
+|8 bits, modulo 256
+|`st_8bit_adder` adds `8'b00000001`
+|===
+
+The 8-bit data path is:
+
+[source,verilog]
+----
+st_8bit_adder adder(addr_b, 8'b00000001, 1'b0, addr_next, Cout);
+st_8_latch latch_a(.data(addr_next), .en(en_a), .Y(addr_a), .Yn(addr_an), .reset(reset));
+st_8_latch latch_b(.data(addr_a),    .en(en_b), .Y(addr_b), .Yn(addr_bn), .reset(reset));
+st_local_clk_hs clk(reset, valid_memo, addr_a, addr_b, addr_next, en_a, en_b, busy);
+assign addr_out = addr_b;
+----
+
+`addr_out` is the second stage, `addr_b`. Before the first step, reset leaves both stages at 0, and combinational logic has already computed `addr_next` as 1. Phase one latches 1 into `addr_a`. Phase two latches 1 into `addr_b`. Only then does the external address change from 0 to 1.
+
+The 3-bit stepper zero-extends its address to 8 bits before the same `st_local_clk_hs`, because the controller's address ports are 8 bits wide. The upper 5 bits stay 0, so the comparison matches a 3-bit comparison.
+
+`st_flash_to_bram` uses the 8-bit stepper, and it issues a step request only while `memo_valid` is low and the eight slots are not all full. Writing and incrementing are therefore separated. See xref:storage.adoc[Storage path].

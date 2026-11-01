@@ -1,0 +1,76 @@
+= Gate-level cells
+:description: Combinational gates, the C-element, the mutex, and the adders implemented under StandardCell.
+:navtitle: Gate-level cells
+
+`StandardCell/` holds the small cells that have no global clock. Latches are in xref:handshake.adoc[Enable, request, and acknowledge], the ring oscillator is in xref:local-time.adoc[Local phases and steppers], and the synapse and neuron are in xref:neuron.adoc[Transaction neuron].
+
+== C-element
+
+`st_c_element` is a gate-level Muller C-element. The output changes only when both inputs become the same value. Otherwise it holds through feedback of its own output.
+
+[source,verilog]
+----
+nand g1(n1, a, y);
+nand g2(n2, b, y);
+nand g3(n3, a, b);
+nand g4(y, n1, n2, n3);
+----
+
+The neuron uses it as the soma: `coincide` becomes 1 only when both synaptic sticky memories are 1. If either path has not arrived, the previous output is held. It has no reset port. The value at startup is whatever the simulator assigns to the feedback loop.
+
+== Mutex
+
+`st_mutex` is combinational logic, not an analog mutex with a metastability filter. A comment in the source says "A get the priority". The gates do something else:
+
+[source,verilog]
+----
+not t_not1(not_B, B);
+and t_and1(last_A, A, not_B);
+not t_not2(not_last_A, last_A);
+and t_and2(last_B, B, not_last_A);
+----
+
+[cols="1,1,1,1",options="header"]
+|===
+|A |B |out_A |out_B
+
+|0 |0 |0 |0
+|1 |0 |1 |0
+|0 |1 |0 |1
+|1 |1 |0 |1
+|===
+
+When both inputs are 1, B gets the output and A is turned off. The module is not instantiated by the storage path or the neuron.
+
+== Adders
+
+Every adder is a combinational carry chain. None of them has a clock or a handshake.
+
+[cols="1,2",options="header"]
+|===
+|Module |Construction
+
+|`st_half_adder`
+|XOR for the sum, AND for the carry.
+
+|`st_full_adder`
+|XOR and carry expanded as a full adder. It does not instantiate the half adder.
+
+|`st_3bit_adder`
+|Three full adders. The 3-bit stepper uses it for `+1`.
+
+|`st_4bit_adder`
+|Carry-lookahead inside the group, and it exports group generate `Gg` and group propagate `Pg`.
+
+|`st_8bit_adder`
+|Two 4-bit adders, with the carry passed serially between groups. The 8-bit stepper uses it for `+1`.
+
+|`st_16bit_adder`
+|Four 4-bit adders, with lookahead between groups through `Gg` / `Pg`.
+|===
+
+A stepper takes only the combinational "current address plus one". The latch after the adder is what retains the new address.
+
+== Cells named in the file list but absent
+
+`filelist.f` names `st_delay_line.v`, `st_reset.v`, `st_glitch_free_mux.v`, and `st_fifo.v`. Those four files are not in the tree. Compiling the whole `filelist.f` fails in Icarus Verilog because it cannot find them. Scripts that already run on their own do not reference these four. See xref:simulate.adoc[Simulation commands].

@@ -1,0 +1,71 @@
+= 局部节拍与步进
+:description: 环振、两相局部控制器，以及 3 位和 8 位步进器如何在没有全局时钟的情况下把地址加一。
+:navtitle: 局部节拍与步进
+
+地址不能靠时钟沿加一。步进器的做法是：组合逻辑先算出下一个地址，再用两相使能把它从一只锁存抄到下一只。什么时候进入下一相，由“锁存结果已经等于目标”来判断。
+
+== 仿真环振
+
+`StandardCell/st_ring_osc.v` 在 `enable` 为高且 `reset` 为低时，把三只反相器连成环。每一级赋值带一个时间单位的仿真延迟。输出再和使能相与，所以未使能时 `clk_out` 为低。
+
+[source,verilog]
+----
+wire en_n = enable & ~reset;
+assign #1 n1 = en_n ? ~n3 : 1'b1;
+assign #1 n2 = en_n ? ~n1 : 1'b1;
+assign #1 n3 = en_n ? ~n2 : 1'b1;
+assign clk_out = en_n & n3;
+----
+
+内部节点在停振时被预置为 1。这只是仿真模型：三级延迟串成环后，一个完整周期是 6 个时间单位，并随 timescale 改变，不能当成工艺参数。
+
+`tb_test_ring` 和 `tb_processing` 把 `clk_out` 接到 `memo_valid`。环振每翻转一次，存储通路就看到一次“有效”或“无效”。
+
+== 两相控制器
+
+`STORAGE/st_local_clk_hs.v` 的端口是 `reset`、`step_req`、三组地址和 `en_a`、`en_b`、`busy`。它内部用三只 `st_latch` 保存状态，比较用的是连线相等，没有时钟。
+
+一次步进分成这两相：
+
+. `step_req` 在空闲时变高，臂锁存器置位。`busy` 变高。
+. 第一相 `en_a` 为高，直到 `addr_a == addr_next`。这表示第一级锁存已经跟上组合逻辑算出的新值。
+. 第二相 `en_b` 为高，直到 `addr_b == addr_a`。这表示第二级锁存已经抄到第一级。
+. `step_req` 回到低，并且第二相已经完成，三只状态锁存被清掉，`busy` 回到低。
+
+`reset` 也会走同一条清除路径。控制器自己的锁存把 `reset` 端口接了常数 0，清除是靠数据输入和使能完成的，不是靠 `st_latch` 的复位脚。
+
+控制器不检查脉冲宽度。`step_req` 若在第二相完成之前撤掉，要等这一步走完才会清除；若在 `busy` 期间再次拉高，开始条件要求 `~armed`，因此不会叠上第二步。
+
+== 步进器
+
+两只步进器的结构一样，只是宽度不同。
+
+[cols="1,1,2",options="header"]
+|===
+|模块 |地址 |加法
+
+|`st_3bit_8_stepper`
+|3 位，模 8
+|`st_3bit_adder` 加 `3'b001`
+
+|`st_8bit_256_stepper`
+|8 位，模 256
+|`st_8bit_adder` 加 `8'b00000001`
+|===
+
+以 8 位步进器为例，数据通路是：
+
+[source,verilog]
+----
+st_8bit_adder adder(addr_b, 8'b00000001, 1'b0, addr_next, Cout);
+st_8_latch latch_a(.data(addr_next), .en(en_a), .Y(addr_a), .Yn(addr_an), .reset(reset));
+st_8_latch latch_b(.data(addr_a),    .en(en_b), .Y(addr_b), .Yn(addr_bn), .reset(reset));
+st_local_clk_hs clk(reset, valid_memo, addr_a, addr_b, addr_next, en_a, en_b, busy);
+assign addr_out = addr_b;
+----
+
+`addr_out` 取的是第二级 `addr_b`。第一步开始前，复位让两级都是 0，组合逻辑已经把 `addr_next` 算成 1。第一相把 1 锁进 `addr_a`，第二相再把 1 锁进 `addr_b`，对外地址才从 0 变成 1。
+
+3 位步进器把地址零扩展到 8 位后送给同一个 `st_local_clk_hs`，因为控制器的地址端口是 8 位。高 5 位恒为 0，比较结果和 3 位比较相同。
+
+`st_flash_to_bram` 使用 8 位步进器，并且只在 `memo_valid` 为低、八个槽又没有全部写满时才给它步进请求。写和加一因此隔开，见 xref:storage.adoc[存储通路]。
