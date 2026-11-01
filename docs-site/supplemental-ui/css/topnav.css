@@ -41,6 +41,16 @@ footer.footer {
     display: none !important;
   }
 
+  .content {
+    justify-content: center;
+  }
+
+  .doc {
+    flex: 0 1 46rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   aside.toc.embedded {
     display: block !important;
   }
